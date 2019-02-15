@@ -607,8 +607,9 @@ fi
 # DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
 if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
-
+	echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN) ... ${GREEN}done${RESET}"
 	wp search-replace "http://${OLD_DOMAIN}" "http://${DOMAIN}" --recurse-objects --skip-columns=guid --skip-tables=wp_users
+	echo -e "DB replacements from '$OLD_DOMAIN' to '$DOMAIN' ... ${GREEN}done${RESET}"
 
 
 fi
