@@ -1,0 +1,5 @@
+database/mysql
+node_modules
+.DS_Store
+start
+push

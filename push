@@ -1,0 +1,72 @@
+#!/bin/bash
+source global.sh
+
+
+
+
+# Get data from .env file
+source .env
+
+
+
+
+(
+
+	# Open the site directory
+	cd site/
+	echo -e "Open the site directory ... ${GREEN}done${RESET}"
+
+
+	# Save the DB backup
+	echo "Backing up the DB..."
+	DB_FILE=database/dump/wordpress_data.sql
+	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > $DB_FILE
+	tail -n +2 "$DB_FILE" > "$DB_FILE.tmp" && mv "$DB_FILE.tmp" "$DB_FILE"
+	echo -e "DB Backup saved in '$DB_FILE' ... ${GREEN}done${RESET}"
+
+
+	# Get the current WP version and add it to the .env files !!!
+
+
+	# Stage all the changes
+	echo "Staging all the changes..."
+	git add -A .
+	echo -e "Stage all the changes ... ${GREEN}done${RESET}"
+
+
+	# Show the git status
+	echo "Showing the git status..."
+	git status
+	echo -e "Show the git status ... ${GREEN}done${RESET}"
+
+
+	# Ask for the commit message
+	read -ep "Commit Message: " COMMIT_MESSAGE
+	if [[ -z "$COMMIT_MESSAGE" ]]; then
+
+		read -ep "Commit Message: " COMMIT_MESSAGE
+		if [[ -z "$COMMIT_MESSAGE" ]]; then
+
+			read -ep "Commit Message: " COMMIT_MESSAGE
+
+		else
+
+			exit
+
+		fi
+
+	fi
+
+
+	# Commit the changes
+	echo "Committing the changes..."
+	git commit -m "$COMMIT_MESSAGE"
+	echo -e "Commit the changes ... ${GREEN}done${RESET}"
+
+
+	# Push the changes
+	echo "Pushing the changes..."
+	git push
+	echo -e "Git push complete ... ${GREEN}done${RESET}"
+
+)

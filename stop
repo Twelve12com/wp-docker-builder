@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+# Stop the server
+echo "Server is stopping..."
+docker-compose stop

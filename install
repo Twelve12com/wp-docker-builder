@@ -1,0 +1,627 @@
+#!/bin/bash
+source global.sh
+
+
+
+
+# Get data from local.env file
+source local.env
+
+
+# Get data from .env file
+if [[ -f .env ]]; then
+
+	source .env
+
+fi
+
+
+
+
+# Builder updates
+self_update
+
+
+
+
+# CHECK THE PROJECT STATUS
+
+# Default
+MODE=install-starter
+# 1. Check IP and Create Host *
+# 2. Prepare the starter template *
+# 3. Build the server *
+# 4. Install the NPM packages and build the style.css file *
+# 5. Do the WP job *
+# 6. Print the site info *
+# 7. Print the Username & Pass *
+# 8. Run the GULP *
+
+
+# If DB dump or MySQL files exist
+if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ ]]; then
+
+
+	# Check for the existing .env file
+	if [[ ! -f site/.env ]]; then
+
+		echo -e "${RED}ERROR:${RESET} Missing .env file in site/ folder."
+		exit
+
+	fi
+
+
+	MODE=install-existing-site
+	# 1. Check IP and Create Host *
+	# 2. Build the server *
+	# 3. URL replace on DB !!! Coming soon
+	# 4. Print the site info *
+
+fi
+
+
+# If local IP already changed on .env file
+if [[ $IP != 127.0.0.1 ]]; then
+
+	MODE=already-installed
+	# 1. Start the servers
+
+fi
+
+
+echo "INSTALLATION MODE: $MODE"
+echo ""
+
+
+
+
+# INSTALL FROM GIT REPO
+if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
+
+
+	read -ep "Git Url (https://username@bitbucket.org/username/reponame.git):" GIT_URL
+	[[ ! -z "$GIT_URL" ]] && sleep 0 || (echo "Empty URL" && exit)
+
+
+	# Delete the existing site folder
+	rm -rf site/
+	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
+
+
+	# Clone the repo
+	git clone $GIT_URL site/
+	echo -e "Git clone ... ${GREEN}done${RESET}"
+
+
+	# If Gulp file and package.json exist in theme folder, remove the style.css and style.css.map
+	if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
+
+		rm -f site/wp/wp-content/themes/${SLUG}/style.css
+		rm -f site/wp/wp-content/themes/${SLUG}/style.css.map
+		rm -f site/wp/wp-content/themes/${SLUG}/package-lock.json
+
+	fi
+
+
+	# Start the server
+	echo "Restarting the installation..."
+	sudo bash install
+	exit
+
+fi
+
+
+
+
+# CONFIRM THE SITE INFO
+# Confirm the environment information if .env file not exists
+if [[ ! -f .env ]]; then
+
+
+
+	# Copy the existing site site/.env file
+	if [[ $MODE == install-existing-site ]]; then
+
+		source site/.env
+
+	fi
+
+
+
+	# Get local domain info
+	read -ep "Domain Name (${DOMAIN}): " domain
+	if [[ -z "$domain" ]]; then
+		
+
+		# Register domain names
+		DOMAIN=$DOMAIN
+		OLD_DOMAIN=$DOMAIN
+		echo "Using '${DOMAIN}'"
+
+
+	else
+
+
+		# If a domain name entered and different than the registered domain
+		if [[ $MODE == install-existing-site ]] && [[ $domain != $DOMAIN ]]; then
+
+			# Register the old domain to replace
+			DOMAIN=$domain
+			OLD_DOMAIN=$DOMAIN
+			echo "DB replacement: '${OLD_DOMAIN}' -> '${DOMAIN}'"
+
+		else
+
+			DOMAIN=$domain
+			OLD_DOMAIN=$domain
+
+		fi
+
+
+	fi
+
+
+
+	# CHECK THE LOCAL DOMAIN AVAILABILITY
+	echo "Checking '${DOMAIN}' availability..."
+	if grep -q "${DOMAIN}" /etc/hosts; then
+		echo -e "${RED}'${DOMAIN}' Host has already been added. Please remove it before installing.${RESET}"
+		exit
+	fi
+	echo -e "${GREEN}${DOMAIN}${RESET} - AVAILABLE"
+
+
+
+	# When creating website from scratch
+	if [[ $MODE == install-starter ]]; then
+
+
+		read -ep "Project Name (${SLUG}): " slug
+		[[ ! -z "$slug" ]] && SLUG=$slug || echo "Using '${SLUG}'"
+
+
+		read -ep "Website Name (${NAME}): " name
+		[[ ! -z "$name" ]] && NAME=$name || echo "Using '${NAME}'"
+
+
+		read -ep "Website Tagline (${DESC}): " desc
+		[[ ! -z "$desc" ]] && DESC=$desc || echo "Using '${DESC}'"
+
+
+		read -ep "Function Prefixes (${PREFIX}): " prefix
+		[[ ! -z "$prefix" ]] && PREFIX=$prefix || echo "Using '${PREFIX}'"
+
+
+		read -ep "Plugins that need to be installed (${PLUGINS}): " plugins
+		if [[ -z "$plugins" ]]; then
+
+			NEW_PLUGINS=$PLUGINS
+			echo "Using '${NEW_PLUGINS}'"
+
+		else
+
+			NEW_PLUGINS=$plugins
+
+		fi
+
+
+		# Ask for the admin info
+		read -ep "Developer Email (${DEVELOPER_EMAIL}): " developer_email
+		[[ ! -z "$developer_email" ]] && DEVELOPER_EMAIL=$developer_email || echo "Using '${DEVELOPER_EMAIL}'"
+
+
+
+		if [[ $DEVELOPER_EMAIL != webdesign@twelve12.com ]]; then
+
+
+			read -ep "Developer Username (${DEVELOPER_USERNAME}): " developer_username
+			[[ ! -z "$developer_username" ]] && DEVELOPER_USERNAME=$developer_username || echo "Using '${DEVELOPER_USERNAME}'"
+
+
+			read -ep "Developer First Name (${DEVELOPER_NAME}): " developer_name
+			[[ ! -z "$developer_name" ]] && DEVELOPER_NAME=$developer_name || echo "Using '${DEVELOPER_NAME}'"
+
+
+			read -ep "Developer Last Name (${DEVELOPER_LAST_NAME}): " developer_last_name
+			[[ ! -z "$developer_last_name" ]] && DEVELOPER_LAST_NAME=$developer_last_name || echo "Using '${DEVELOPER_LAST_NAME}'"
+
+
+			read -ep "Developer Website URL (${DEVELOPER_URL}): " developer_url
+			[[ ! -z "$developer_url" ]] && DEVELOPER_URL=$developer_url || echo "Using '${DEVELOPER_URL}'"
+
+
+		fi
+
+
+	fi
+
+
+
+fi
+
+
+
+
+# Confirm the information
+echo ""
+echo ""
+echo "== Information Entered ============"
+echo ""
+echo "Local development domain: $DOMAIN"
+
+if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
+	echo "Old domain: $OLD_DOMAIN"
+fi
+
+echo ""
+echo "Project Name: $SLUG"
+
+if [[ $MODE == install-starter ]]; then
+	echo "Website Name: $NAME"
+	echo "Website Tagline: $DESC"
+	echo "Function Prefixes: $PREFIX"
+	[[ ! -z "$plugins" ]] && echo "Plugins: $NEW_PLUGINS" || echo "Plugins: $PLUGINS"
+	echo ""
+
+	if [[ $DEVELOPER_EMAIL != webdesign@twelve12.com ]]; then
+		echo "Developer Email: $DEVELOPER_EMAIL"
+		echo "Developer Username: $DEVELOPER_USERNAME"
+		echo "Developer First Name: $DEVELOPER_NAME"
+		echo "Developer Last Name: $DEVELOPER_LAST_NAME"
+		echo "Developer URL: $DEVELOPER_URL"
+		echo ""
+	fi
+
+fi
+
+echo ""
+echo "==================================="
+echo ""
+echo ""
+read -ep "Are these correct? (type 'yes' to confirm): " confirm
+
+
+
+
+# CHANGE THE FILE IF YES
+if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
+
+
+	# Update the project folder name
+	mv ../wp-docker-builder/ ../$SLUG
+
+
+
+	# Create the .env file
+	cp local.env .env
+	echo -e ".env file created ... ${GREEN}done${RESET}"
+
+
+	# Update the .env file
+	sedreplace "s/DOMAIN=dev.sitename.com/DOMAIN=$DOMAIN/g" .env;
+	sedreplace "s/OLD_DOMAIN=dev.sitename.com/DOMAIN=$OLD_DOMAIN/g" .env;
+
+	sedreplace "s/SLUG=site-name/SLUG=$SLUG/g" .env;
+	sedreplace "s/Site Name/$NAME/g" .env;
+	sedreplace "s/Site tagline/$DESC/g" .env;
+	sedreplace "s/PREFIX=sitename/PREFIX=$PREFIX/g" .env;
+	sedreplace "s/$PLUGINS/$NEW_PLUGINS/g" .env;
+
+	sedreplace "s/DEVELOPER_USERNAME=Username/DEVELOPER_USERNAME=$DEVELOPER_USERNAME/g" .env;
+	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" .env;
+	sedreplace "s/DEVELOPER_LAST_NAME=Lastname/DEVELOPER_LAST_NAME=$DEVELOPER_LAST_NAME/g" .env;
+	sedreplace "s#DEVELOPER_EMAIL=name@company.com#DEVELOPER_EMAIL=$DEVELOPER_EMAIL#g" .env;
+	sedreplace "s#DEVELOPER_URL=www.company.com#DEVELOPER_URL=$DEVELOPER_URL#g" .env;
+	echo -e ".env file updated with the new info ... ${GREEN}done${RESET}"
+
+
+	# Copy the .env file to "site/" folder
+	cp .env site/.env
+	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
+
+
+	# Get data from the new .env file
+	source .env
+
+
+else
+
+
+	# If not confirmed, restart the installation
+	bash install
+	exit
+
+
+fi
+
+
+
+
+# CHECK THE LOCAL DOMAIN AVAILABILITY
+echo "Checking '${DOMAIN}' availability..."
+if grep -q "${DOMAIN}" /etc/hosts; then
+	echo -e "${RED}'${DOMAIN}' Host has already been added. Please remove it before installing.${RESET}"
+	exit
+fi
+echo -e "${GREEN}${DOMAIN}${RESET} - AVAILABLE"
+
+
+
+
+# CHECK IP AND CREATE HOST
+echo "Checking IP availability..."
+COUNTER=2
+while [[ $COUNTER -lt 120 ]]; do
+
+	IP="127.0.0.${COUNTER}"
+
+
+	echo "Checking '${IP}' availability..."
+	if grep -q "${IP}" /etc/hosts; then
+		echo "${IP} - NOT AVAILABLE"
+	else
+
+		if curl --max-time 3 --output /dev/null --silent --head --fail "${IP}"; then
+			echo -e "${RED}${IP}${RESET} - NOT AVAILABLE"
+		else
+			echo -e "${GREEN}${IP}${RESET} - AVAILABLE"
+			break
+		fi
+
+	fi
+
+
+	let COUNTER=COUNTER+1
+
+done
+
+# Update the environment file (.env) with the available IP
+sedreplace "s/IP=127.0.0.1/IP=${IP}/g" .env;
+echo -e "'${IP}' changed as '${IP}' on .env file ... ${GREEN}done${RESET}"
+
+
+# Open that IP slot
+ifconfig lo0 alias $IP up
+echo -e "'${IP}' is now available to build server ... ${GREEN}done${RESET}"
+
+
+
+
+# # Update the permissions
+# permission_update site/
+
+
+
+
+# BUILD THE SERVER
+echo "Server is building..."
+docker-compose rm &&
+docker-compose pull &&
+docker-compose build --no-cache &&
+docker-compose up -d --force-recreate
+
+
+# Add the host to the /etc/hosts file
+sudo bash config/etc-hosts.sh -add $DOMAIN $IP
+killall -HUP mDNSResponder
+
+
+# Check MySQL to be ready
+while ! docker-compose exec db mysqladmin --user=root --password=password --host "${IP}" ping --silent &> /dev/null ; do
+	echo "Waiting for database connection..."
+	sleep 3
+done
+echo -e "MySQL is ready! ... ${GREEN}done${RESET}"
+
+
+
+
+# PREPARE THE STARTER TEMPLATE
+if [[ $MODE == install-starter ]]; then
+
+
+	# Download the template
+	git clone https://twelve12com@bitbucket.org/twelve12com/new-wordpress-theme-template.git site/wp/wp-content/themes/${SLUG}/
+	rm -rf site/wp/wp-content/themes/${SLUG}/.git
+	echo -e "Starter theme clonned ... ${GREEN}done${RESET}"
+
+
+	# Update the permissions
+	permission_update site/wp/wp-content/themes/${SLUG}/
+
+
+	# Theme function prefix changes
+	sedreplace "s/sitename/${PREFIX}/g" site/wp/wp-content/themes/${SLUG}/functions.php;
+	sedreplace "s/sitename/${PREFIX}/g" site/wp/wp-content/themes/${SLUG}/header.php;
+	echo -e "Function prefixes changed as '${PREFIX}_' ... ${GREEN}done${RESET}"
+
+
+	# Theme info changes
+	sedreplace "s/Site Name/${NAME}/g" site/wp/wp-content/themes/${SLUG}/style.scss;
+	sedreplace "s/Site tagline/${DESC}/g" site/wp/wp-content/themes/${SLUG}/style.scss;
+	echo -e "Theme information updated as '${NAME}' ... ${GREEN}done${RESET}"
+
+
+fi
+
+
+
+
+# INSTALL NPM PACKAGES AND BUILD THE "style.css" FILE
+if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
+
+
+	# Install NPM packages
+	echo "NPM packages installing..."
+	docker-compose run --no-deps --rm gulp npm run-script build
+	echo -e "SCSS file built ... ${GREEN}done${RESET}"
+
+
+fi
+
+
+
+
+# IF STARTING A NEW PROJECT
+if [[ $MODE == install-starter ]]; then
+
+	# DO THE WP WORKS
+	source wp.sh
+
+
+	# Save the DB backup
+	DB_FILE=site/database/dump/wordpress_data.sql
+	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > $DB_FILE
+	tail -n +2 "$DB_FILE" > "$DB_FILE.tmp" && mv "$DB_FILE.tmp" "$DB_FILE"
+	echo -e "DB Backup saved in '$DB_FILE' ... ${GREEN}done${RESET}"
+
+
+	read -ep "Would you like to create new this project to Git? (type 'no' if you don't want): " gitconfirm
+	if [[ $gitconfirm != no ]]; then
+
+
+		# Initiate git
+		(
+
+			# Open the site directory
+			cd site/
+			echo -e "Open the site directory ... ${GREEN}done${RESET}"
+
+
+			# Initiate Git
+			git init
+			echo -e "Initiate Git ... ${GREEN}done${RESET}"
+
+
+			# Stage all the changes
+			git add -A .
+			echo -e "Stage all the changes ... ${GREEN}done${RESET}"
+
+
+			# Show the git status
+			git status
+			echo -e "Show the git status ... ${GREEN}done${RESET}"
+
+
+			# Commit the changes
+			git commit -m "Initial commit"
+			echo -e "Commit the changes ... ${GREEN}done${RESET}"
+
+
+
+
+			read -ep "Bitbucket Repo Name ($SLUG): " reponame
+			if [[ -z "$reponame" ]]; then
+				reponame=$SLUG
+				echo "Using '$reponame'"
+			fi
+
+
+			read -ep "Bitbucket Username (Twelve12com): " username
+			if [[ -z "$username" ]]; then
+				username=Twelve12com
+				echo "Using '$username'"
+			fi
+
+
+			echo 'Bitbucket Password:'
+			read -s password  # -s flag hides password text
+
+
+			# Confirm the information
+			echo ""
+			echo ""
+			echo "== Site Info ===================="
+			echo ""
+			echo "Bitbucket Repo Name: $reponame"
+			echo "Bitbucket Username: $username"
+			echo "Bitbucket Password: *********"
+			echo ""
+			echo "================================="
+			echo ""
+			echo ""
+
+
+			read -ep "Are these information correct? (yes | retype): " gitconfirm
+			if [[ $gitconfirm == retype ]]; then
+
+
+				read -ep "Bitbucket Repo Name ($SLUG): " reponame
+				if [[ -z "$reponame" ]]; then
+					reponame=$SLUG
+					echo "Using '$reponame'"
+				fi
+
+
+				read -ep "Bitbucket Username (Twelve12com): " username
+				if [[ -z "$username" ]]; then
+					username=Twelve12com
+					echo "Using '$username'"
+				fi
+
+
+				echo 'Bitbucket Password:'
+				read -s password  # -s flag hides password text
+
+
+			fi
+
+
+
+
+			# Create a private repo
+			curl POST -v -u $username:$password  -H "Content-Type: application/json" \
+		https://api.bitbucket.org/2.0/repositories/$username/$reponame \
+		-d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
+			echo ""
+			echo -e "Create a private repo ... ${GREEN}done${RESET}"
+
+
+			# Add the origin
+			git remote add origin https://$username@bitbucket.org/$username/$reponame.git
+			echo -e "Add the origin ... ${GREEN}done${RESET}"
+
+
+			# Push the changes
+			git push -u origin --all
+			git push -u origin --tags
+			echo -e "Push the files ... ${GREEN}done${RESET}"
+
+
+			# Update .git permissions
+			permission_update .git
+		)
+
+
+	fi
+
+fi
+
+
+
+
+# # Fix the permissions
+# server_permission_update /var/www/html/wp-content/
+
+
+
+
+# PRINT THE SITE INFO
+echo ""
+echo ""
+echo "== Site Info ===================="
+echo ""
+echo "Admin Page: http://${DOMAIN}/wp-admin"
+
+if [[ $MODE == install-starter ]]; then
+
+	echo "Username: ${ADMIN_USERNAME}"
+	echo "${ADMIN_ONLY_PASSWORD}"
+
+fi
+
+echo "IP: ${IP}"
+echo ""
+echo "================================="
+echo ""
+echo ""

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo bash stop
+sudo bash start
