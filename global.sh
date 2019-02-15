@@ -118,3 +118,7 @@ function git_permission_update () {
 	echo -e "Git permissions fixed ... ${GREEN}done${RESET}"
 
 }
+
+function wp {
+	command docker-compose run --no-deps --rm wpcli --allow-root "$@"
+}

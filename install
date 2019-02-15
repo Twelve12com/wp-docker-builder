@@ -604,6 +604,18 @@ fi
 
 
 
+# DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
+if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
+
+
+	wp search-replace "http://${OLD_DOMAIN}" "http://${DOMAIN}" --recurse-objects --skip-columns=guid --skip-tables=wp_users
+
+
+fi
+
+
+
+
 # # Fix the permissions
 # server_permission_update /var/www/html/wp-content/
 
