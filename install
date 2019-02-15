@@ -54,7 +54,7 @@ if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ 
 	MODE=install-existing-site
 	# 1. Check IP and Create Host *
 	# 2. Build the server *
-	# 3. URL replace on DB !!! Coming soon
+	# 3. URL replace on DB *
 	# 4. Print the site info *
 
 fi
