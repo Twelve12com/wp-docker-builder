@@ -103,6 +103,10 @@ if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 	fi
 
 
+	# Update the permissions
+	permission_update site/
+
+
 	# Start the server
 	echo "Restarting the installation..."
 	sudo bash install
