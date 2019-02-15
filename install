@@ -150,14 +150,14 @@ if [[ ! -f .env ]]; then
 		if [[ $MODE == install-existing-site ]] && [[ $domain != $DOMAIN ]]; then
 
 			# Register the old domain to replace
-			DOMAIN=$domain
 			OLD_DOMAIN=$DOMAIN
+			DOMAIN=$domain
 			echo "DB replacement: '${OLD_DOMAIN}' -> '${DOMAIN}'"
 
 		else
 
-			DOMAIN=$domain
 			OLD_DOMAIN=$domain
+			DOMAIN=$domain
 
 		fi
 
