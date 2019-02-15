@@ -303,7 +303,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 	# Update the .env file
 	sedreplace "s/DOMAIN=dev.sitename.com/DOMAIN=$DOMAIN/g" .env;
-	sedreplace "s/OLD_DOMAIN=dev.sitename.com/DOMAIN=$OLD_DOMAIN/g" .env;
+	sedreplace "s/OLD_DOMAIN=old.sitename.com/DOMAIN=$OLD_DOMAIN/g" .env;
 
 	sedreplace "s/SLUG=site-name/SLUG=$SLUG/g" .env;
 	sedreplace "s/Site Name/$NAME/g" .env;
