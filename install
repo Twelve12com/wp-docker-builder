@@ -100,9 +100,29 @@ if [[ $MODE == install-remote ]]; then
 	fi
 
 
+	# Delete the existing site folder
+	rm -rf site/
+	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
+
+
 	# Clone the repo
-	git clone "https://twelve12com@bitbucket.org/twelve12com/${GIT}.git" site_temp/
+	git clone "https://twelve12com@bitbucket.org/twelve12com/${GIT}.git" site/
 	echo -e "Git clone ... ${GREEN}done${RESET}"
+
+
+	# Make the wp-content folder temporary
+	if [[ -d site/wp/wp-content ]]; then
+
+		mv site/wp/wp-content site/wp/tmp_wp-content
+
+	fi
+
+	# Old version
+	if [[ -d site/wp-content ]]; then
+
+		mv site/wp-content site/tmp_wp-content
+
+	fi
 
 
 fi
@@ -125,10 +145,10 @@ if [[ ! -f .env ]]; then
 
 
 
-	# Copy the existing site site_temp/.env file
+	# Copy the existing site site/.env file
 	if [[ $MODE == install-remote ]]; then
 
-		source site_temp/.env
+		source site/.env
 
 	fi
 
@@ -585,13 +605,19 @@ fi
 if [[ $MODE == install-remote ]]; then
 
 
-	# Delete the existing site folder
-	rm -rf site/
-	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
+	# Make the wp-content folder temporary
+	if [[ -d site/wp/tmp_wp-content ]]; then
 
+		mv site/wp/tmp_wp-content site/wp/wp-content
 
-	# Update with the new site folder
-	mv site_temp/ site/
+	fi
+
+	# Old version
+	if [[ -d site/tmp_wp-content ]]; then
+
+		mv site/tmp_wp-content site/wp-content
+
+	fi
 
 
 	# Update the permissions
