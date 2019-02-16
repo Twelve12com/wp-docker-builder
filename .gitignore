@@ -1,6 +1,7 @@
 site/*
 !site/start
 !site/push
+!site/restart
 !.gitkeep
 !.gitignore
 .env
