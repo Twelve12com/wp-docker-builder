@@ -79,7 +79,7 @@ echo ""
 if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 
 
-	read -ep "Project same (site-name): " SLUG
+	read -ep "Project name (site-name): " SLUG
 	[[ ! -z "$SLUG" ]] && sleep 0 || (echo "Empty name" && exit)
 
 
