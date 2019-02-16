@@ -79,7 +79,7 @@ echo ""
 if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 
 
-	read -ep "Git Url (https://username@bitbucket.org/username/reponame.git):" GIT_URL
+	read -ep "Git Url (https://username@bitbucket.org/username/reponame.git): " GIT_URL
 	[[ ! -z "$GIT_URL" ]] && sleep 0 || (echo "Empty URL" && exit)
 
 
