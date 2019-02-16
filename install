@@ -79,12 +79,12 @@ echo ""
 if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 
 
-	read -ep "Git Url (https://username@bitbucket.org/username/reponame.git): " GIT_URL
-	[[ ! -z "$GIT_URL" ]] && sleep 0 || (echo "Empty URL" && exit)
+	read -ep "Project same (site-name): " SLUG
+	[[ ! -z "$SLUG" ]] && sleep 0 || (echo "Empty name" && exit)
 
 
 	# Test the git URL
-	if git ls-remote "${GIT_URL}" HEAD &>/dev/null; then
+	if git ls-remote "https://twelve12com@bitbucket.org/twelve12com/${SLUG}.git" HEAD &>/dev/null; then
 		echo "Repository found."
 	else
 		echo "Remote repository not found."
@@ -98,7 +98,7 @@ if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 
 
 	# Clone the repo
-	git clone $GIT_URL site/
+	git clone "https://twelve12com@bitbucket.org/twelve12com/${SLUG}.git" site/
 	echo -e "Git clone ... ${GREEN}done${RESET}"
 
 
