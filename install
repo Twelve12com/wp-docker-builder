@@ -87,7 +87,7 @@ echo ""
 if [[ $MODE == install-remote ]]; then
 
 
-	read -ep "Project name (site-name): " GIT
+	read -ep "Remote project name (site-name): " GIT
 	[[ ! -z "$GIT" ]] && sleep 0 || (echo "Empty name" && exit)
 
 
@@ -123,6 +123,10 @@ if [[ $MODE == install-remote ]]; then
 		mv site/wp-content site/tmp_wp-content
 
 	fi
+
+
+	# Update the permissions
+	permission_update site/
 
 
 fi
