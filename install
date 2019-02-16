@@ -609,19 +609,30 @@ fi
 if [[ $MODE == install-remote ]]; then
 
 
+	echo -e "Updating the remote files..."
+
+
 	# Make the wp-content folder temporary
 	if [[ -d site/wp/tmp_wp-content ]]; then
-
+		
+		# Delete the old wp-content folder
+		rm -rf site/wp/wp-content
+		
 		mv site/wp/tmp_wp-content site/wp/wp-content
 
 	fi
 
 	# Old version
 	if [[ -d site/tmp_wp-content ]]; then
+		
+		# Delete the old wp-content folder
+		rm -rf site/wp-content
 
 		mv site/tmp_wp-content site/wp-content
 
 	fi
+
+	echo -e "Remote files update ... ${GREEN}done${RESET}"
 
 
 	# Update the permissions
