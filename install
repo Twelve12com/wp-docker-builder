@@ -617,7 +617,7 @@ fi
 if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
 	echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN)..."
-	wp search-replace "http://${OLD_DOMAIN}" "http://${DOMAIN}" --recurse-objects --skip-columns=guid --skip-tables=wp_users
+	wp search-replace "${OLD_DOMAIN}" "${DOMAIN}" --recurse-objects --report-changed-only --skip-columns=guid --skip-tables=wp_users
 	echo -e "DB replacements from '$OLD_DOMAIN' to '$DOMAIN' ... ${GREEN}done${RESET}"
 
 
