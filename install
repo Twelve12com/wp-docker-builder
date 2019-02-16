@@ -102,31 +102,6 @@ if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 	echo -e "Git clone ... ${GREEN}done${RESET}"
 
 
-	if [[ ! -d site/wp ]]; then
-
-		echo -e "Old version detected..."
-
-
-		# Download the WP files
-		wp --skip-content core download
-
-
-		# Remove the old wp-content
-		rm -rf site/wp/wp-content
-
-
-		# Move our wp-content folder
-		mv site/wp-content site/wp/wp-content
-
-		# Create the config file
-		wp config create --dbname=wordpress_data --dbuser=root --dbpass=password --dbhost=db
-
-
-		echo -e "Old version updated ... ${GREEN}done${RESET}"
-
-	fi
-
-
 	# If Gulp file and package.json exist in theme folder, remove the style.css and style.css.map
 	if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
 
@@ -480,28 +455,12 @@ if [[ $MODE == install-starter ]]; then
 	echo -e "Theme information updated as '${NAME}' ... ${GREEN}done${RESET}"
 
 
-fi
-
-
-
-
-# INSTALL NPM PACKAGES AND BUILD THE "style.css" FILE
-if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
-
-
 	# Install NPM packages
 	echo "NPM packages installing..."
 	docker-compose run --no-deps --rm gulp npm run-script build
 	echo -e "SCSS file built ... ${GREEN}done${RESET}"
 
 
-fi
-
-
-
-
-# IF STARTING A NEW PROJECT
-if [[ $MODE == install-starter ]]; then
 
 	# DO THE WP WORKS
 	source wp.sh
@@ -632,6 +591,32 @@ if [[ $MODE == install-starter ]]; then
 
 
 	fi
+
+fi
+
+
+
+if [[ -d site/wp-content ]]; then
+
+	echo -e "Old version detected..."
+
+
+	# Download the WP files
+	#wp --skip-content core download
+
+
+	# Remove the old wp-content
+	rm -rf site/wp/wp-content
+
+
+	# Move our wp-content folder
+	mv site/wp-content site/wp/wp-content
+
+	# Create the config file
+	#wp config create --dbname=wordpress_data --dbuser=root --dbpass=password --dbhost=db
+
+
+	echo -e "Old version updated ... ${GREEN}done${RESET}"
 
 fi
 
