@@ -596,13 +596,11 @@ fi
 
 
 
+
+# Old version remote files
 if [[ -d site/wp-content ]]; then
 
 	echo -e "Old version detected..."
-
-
-	# Download the WP files
-	#wp --skip-content core download
 
 
 	# Remove the old wp-content
@@ -611,9 +609,6 @@ if [[ -d site/wp-content ]]; then
 
 	# Move our wp-content folder
 	mv site/wp-content site/wp/wp-content
-
-	# Create the config file
-	#wp config create --dbname=wordpress_data --dbuser=root --dbpass=password --dbhost=db
 
 
 	echo -e "Old version updated ... ${GREEN}done${RESET}"
