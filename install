@@ -38,6 +38,14 @@ MODE=install-starter
 # 8. Run the GULP *
 
 
+# Install from a git repo
+if [[ $1 == --remote ]]; then
+
+	MODE=install-remote
+
+fi
+
+
 # If DB dump or MySQL files exist
 if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ ]]; then
 
@@ -76,15 +84,15 @@ echo ""
 
 
 # INSTALL FROM GIT REPO
-if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
+if [[ $MODE == install-remote ]]; then
 
 
-	read -ep "Project name (site-name): " SLUG
-	[[ ! -z "$SLUG" ]] && sleep 0 || (echo "Empty name" && exit)
+	read -ep "Project name (site-name): " GIT
+	[[ ! -z "$GIT" ]] && sleep 0 || (echo "Empty name" && exit)
 
 
 	# Test the git URL
-	if git ls-remote "https://twelve12com@bitbucket.org/twelve12com/${SLUG}.git" HEAD &>/dev/null; then
+	if git ls-remote "https://twelve12com@bitbucket.org/twelve12com/${GIT}.git" HEAD &>/dev/null; then
 		echo "Repository found."
 	else
 		echo "Remote repository not found."
@@ -92,34 +100,10 @@ if [[ $MODE == install-starter ]] && [[ $1 == --remote ]]; then
 	fi
 
 
-	# Delete the existing site folder
-	rm -rf site/
-	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
-
-
 	# Clone the repo
-	git clone "https://twelve12com@bitbucket.org/twelve12com/${SLUG}.git" site/
+	git clone "https://twelve12com@bitbucket.org/twelve12com/${GIT}.git" site_temp/
 	echo -e "Git clone ... ${GREEN}done${RESET}"
 
-
-	# If Gulp file and package.json exist in theme folder, remove the style.css and style.css.map
-	if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
-
-		rm -f site/wp/wp-content/themes/${SLUG}/style.css
-		rm -f site/wp/wp-content/themes/${SLUG}/style.css.map
-		rm -f site/wp/wp-content/themes/${SLUG}/package-lock.json
-
-	fi
-
-
-	# Update the permissions
-	permission_update site/
-
-
-	# Start the server
-	echo "Restarting the installation..."
-	sudo bash install
-	exit
 
 fi
 
@@ -136,6 +120,15 @@ if [[ ! -f .env ]]; then
 	if [[ $MODE == install-existing-site ]]; then
 
 		source site/.env
+
+	fi
+
+
+
+	# Copy the existing site site_temp/.env file
+	if [[ $MODE == install-remote ]]; then
+
+		source site_temp/.env
 
 	fi
 
@@ -339,11 +332,8 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 else
 
-
-	# If not confirmed, restart the installation
-	bash install
+	# If not confirmed, close the installation
 	exit
-
 
 fi
 
@@ -396,12 +386,6 @@ echo -e "'${IP}' changed as '${IP}' on .env file ... ${GREEN}done${RESET}"
 # Open that IP slot
 ifconfig lo0 alias $IP up
 echo -e "'${IP}' is now available to build server ... ${GREEN}done${RESET}"
-
-
-
-
-# # Update the permissions
-# permission_update site/
 
 
 
@@ -597,6 +581,28 @@ fi
 
 
 
+# DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
+if [[ $MODE == install-remote ]]; then
+
+
+	# Delete the existing site folder
+	rm -rf site/
+	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
+
+
+	# Update with the new site folder
+	mv site_temp/ site/
+
+
+	# Update the permissions
+	permission_update site/
+
+
+fi
+
+
+
+
 # Old version remote files
 if [[ -d site/wp-content ]]; then
 
@@ -619,7 +625,8 @@ fi
 
 
 # DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
-if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
+if [[ $DOMAIN != $OLD_DOMAIN ]]; then
+
 
 	echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN)..."
 	wp search-replace "${OLD_DOMAIN}" "${DOMAIN}" --recurse-objects --report-changed-only --skip-columns=guid --skip-tables=wp_users
