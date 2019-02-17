@@ -80,6 +80,18 @@ if [[ $DB_SUM1 != $DB_SUM2 ]]; then
 	echo -e "MySQL is ready! ... ${GREEN}done${RESET}"
 
 
+	# Do the URL replacements if needed
+	if [[ $DOMAIN != $OLD_DOMAIN ]]; then
+
+
+		echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN)..."
+		wp search-replace "${OLD_DOMAIN}" "${DOMAIN}" --recurse-objects --report-changed-only --skip-columns=guid --skip-tables=wp_users
+		echo -e "DB replacements from '$OLD_DOMAIN' to '$DOMAIN' ... ${GREEN}done${RESET}"
+
+
+	fi
+
+
 else
 
 
