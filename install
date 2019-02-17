@@ -141,7 +141,7 @@ if [[ ! -f .env ]]; then
 
 
 	# Copy the existing site site/.env file
-	if [[ $MODE == install-existing-site ]]; then
+	if [[ $MODE == install-existing-site ]] || [[ $MODE == install-remote ]]; then
 
 		source site/.env
 
@@ -149,16 +149,7 @@ if [[ ! -f .env ]]; then
 
 
 
-	# Copy the existing site site/.env file
-	if [[ $MODE == install-remote ]]; then
-
-		source site/.env
-
-	fi
-
-
-
-	# Get local domain info
+	# Confirm the local domain name
 	read -ep "Domain Name (${DOMAIN}): " domain
 	if [[ -z "$domain" ]]; then
 		
@@ -321,8 +312,8 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	mv ../wp-docker-builder/ ../$SLUG
 
 
-
-	# Create the .env file
+	# Create the .env file from the template (local.env)
+	rm .env
 	cp local.env .env
 	echo -e ".env file created ... ${GREEN}done${RESET}"
 
@@ -345,7 +336,8 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	echo -e ".env file updated with the new info ... ${GREEN}done${RESET}"
 
 
-	# Copy the .env file to "site/" folder
+	# Save the new .env file to the site folder
+	rm site/.env
 	cp .env site/.env
 	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
 
@@ -617,7 +609,6 @@ if [[ $MODE == install-remote ]]; then
 		
 		# Delete the old wp-content folder
 		rm -rf site/wp/wp-content
-		
 		mv site/wp/tmp_wp-content site/wp/wp-content
 
 	fi
@@ -627,7 +618,6 @@ if [[ $MODE == install-remote ]]; then
 		
 		# Delete the old wp-content folder
 		rm -rf site/wp-content
-
 		mv site/tmp_wp-content site/wp-content
 
 	fi
