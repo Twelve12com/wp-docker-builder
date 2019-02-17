@@ -679,8 +679,9 @@ fi
 
 
 
-# # Fix the permissions
-# server_permission_update /var/www/html/wp-content/
+# Fix the permissions finally
+git_permission_update site/.git
+git_permission_update .git
 
 
 
