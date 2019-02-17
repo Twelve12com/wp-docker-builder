@@ -1,5 +1,5 @@
-# Wordpress Docker Starter with a Clean Template (BETA)
-Wordpress development environment with Docker. Template is being developed with Flexible Grid System. (Only tested on MacOS)
+# Wordpress Docker Starter with a Clean Template
+Wordpress development environment with Docker. Starter template is being developed with Flexible Grid System. (Only tested on MacOS)
 <br><br>
 
 ## Usage & Preparation
@@ -10,18 +10,11 @@ Clone the builder with the code below:
 git clone https://github.com/bilaltas/wp-docker-builder.git && cd wp-docker-builder
 ```
 
-Then, it has four types of using:
+Then, it has two types of using:
 1. Installing Wordpress with my empty starter template (Default)
 	* Nothing to do, just start installation (sudo bash install)
-2. Installing Wordpress with your own theme
-	* Put your theme folder(s) to "site/wp/wp-content/themes/" folder
-	* Start installation and don't forget to type your theme folder name to activate on WP, when it asks for "Active theme folder name"
-3. Installing an existing Wordpress with a database dump and "site/wp/wp-content" folder
-	* Put your .sql file to "site/database/dump/" folder
-	* Replace the "site/wp/wp-content" with your own "site/wp/wp-content" folder
-	* Start installation and don't forget to type your full old website URL to replace on WP DB, when it asks for "Old full website URL" (With "http:// or https:// protocol) (Not done yet)
-4. Installing an existing Wordpress with a Git URL
-	* Add **--remote** flag to normal installation code
+2. Installing an existing Wordpress with a Git URL
+	* Add **--remote** flag to normal installation code (sudo bash install --remote)
 
 
 ### Installation
@@ -34,12 +27,12 @@ sudo bash install
 sudo bash install --remote
 ```
 
-### Restarting
+### Run the server
 ```bash
 sudo bash start
 ```
 
-### Pushing to Git Repo
+### Pushing to Bitbucket Repo
 ```bash
 sudo bash push
 Commit Message: ............... (Asks for the commit message before pushing)
@@ -50,7 +43,7 @@ Commit Message: ............... (Asks for the commit message before pushing)
 sudo bash stop
 ```
 
-### Uninstalling
+### Uninstalling from Docker
 ```bash
 sudo bash uninstall
 ```
@@ -81,7 +74,7 @@ sudo bash uninstall
 	* Updates the timezone as defined in **".env"** file
 	* Updates the blog posts permalink structure as defined in **".env"** file
 	* Activates the theme that's in the **"/site/wp/wp-content/themes/"** folder
-	* Deletes the other default themes **(twentyfifteen, twentyseventeen and twentysixteen)**
+	* Deletes the other default themes **(twentysixteen, twentyseventeen and twentynineteen)**
 	* Deletes the default plugins **(Akismet and Hello Dolly)**
 	* Installs the plugins that are listed in **".env"** file
 	* Deletes the **"Sample Page"**
@@ -100,7 +93,7 @@ sudo bash uninstall
 2. Runs the Gulp to watch SASS changes (If package.json and gulpfile.js files exist in the active theme folder)
 
 
-### When Pushing to Git *(sudo bash push)*
+### When Pushing to Bitbucket *(sudo bash push)*
 1. Creates DB backup
 2. Asks for the commit message
 3. Pushes to the remote git repo
