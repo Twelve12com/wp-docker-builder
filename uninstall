@@ -32,15 +32,19 @@ docker-compose down
 
 
 
-# Revert the IP on environment file (.env)
-sed -i "" "s/IP=${IP}/IP=127.0.0.1/g" .env;
-echo -e "'${IP}' reverted on .env file ... ${GREEN}done${RESET}"
-
-
-
-
 # Remove the host to the list
 sudo bash config/etc-hosts.sh -remove $DOMAIN
 killall -HUP mDNSResponder
+echo -e "'$DOMAIN - $IP' Removed from the etc/hosts file ... ${GREEN}done${RESET}"
+
+
+
+
+# Delete the .env file
+rm .env
+echo -e ".env file removed from the builder ... ${GREEN}done${RESET}"
+
+
+
 
 echo -e "${GREEN}Project Uninstalled${RESET}"
