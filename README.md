@@ -7,7 +7,7 @@ Wordpress development environment with Docker. Starter template is being develop
 ### Clonning
 Clone the builder with the code below:
 ```bash
-git clone https://github.com/bilaltas/wp-docker-builder.git && cd wp-docker-builder
+git clone https://github.com/Twelve12com/wp-docker-builder.git && cd wp-docker-builder
 ```
 
 Then, it has two types of using:
