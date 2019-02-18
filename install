@@ -101,7 +101,7 @@ if [[ $MODE == install-remote ]]; then
 
 
 	# Delete the existing site folder
-	rm -rf site/
+	rm --force -rf site/
 	echo -e "Existing 'site' folder removed ... ${GREEN}done${RESET}"
 
 
@@ -313,7 +313,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 
 	# Create the .env file from the template (local.env)
-	rm .env
+	rm --force .env
 	cp local.env .env
 	echo -e ".env file created ... ${GREEN}done${RESET}"
 
@@ -337,7 +337,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 
 	# Save the new .env file to the site folder
-	rm site/.env
+	rm --force site/.env
 	cp .env site/.env
 	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
 
@@ -435,7 +435,7 @@ if [[ $MODE == install-starter ]]; then
 
 	# Download the template
 	git clone https://github.com/Twelve12com/wp-flexible-starter-template.git site/wp/wp-content/themes/${SLUG}/
-	rm -rf site/wp/wp-content/themes/${SLUG}/.git
+	rm --force -rf site/wp/wp-content/themes/${SLUG}/.git
 	echo -e "Starter theme clonned ... ${GREEN}done${RESET}"
 
 
@@ -557,7 +557,7 @@ if [[ $MODE == install-remote ]]; then
 	if [[ -d site/wp/tmp_wp-content ]]; then
 		
 		# Delete the old wp-content folder
-		rm -rf site/wp/wp-content
+		rm --force -rf site/wp/wp-content
 		mv site/wp/tmp_wp-content site/wp/wp-content
 
 	fi
@@ -566,7 +566,7 @@ if [[ $MODE == install-remote ]]; then
 	if [[ -d site/tmp_wp-content ]]; then
 		
 		# Delete the old wp-content folder
-		rm -rf site/wp-content
+		rm --force -rf site/wp-content
 		mv site/tmp_wp-content site/wp-content
 
 	fi
@@ -587,7 +587,7 @@ if [[ $MODE == install-remote ]]; then
 
 
 		# Remove the old wp-content
-		rm -rf site/wp/wp-content
+		rm --force -rf site/wp/wp-content
 
 
 		# Move our wp-content folder
