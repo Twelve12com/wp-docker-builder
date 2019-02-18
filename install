@@ -164,7 +164,7 @@ if [[ ! -f .env ]]; then
 
 
 		# If a domain name entered and different than the registered domain
-		if [[ $MODE == install-existing-site ]] && [[ $domain != $DOMAIN ]]; then
+		if [[ $domain != $DOMAIN && ($MODE == install-existing-site || $MODE == install-remote) ]]; then
 
 			# Register the old domain to replace
 			OLD_DOMAIN=$DOMAIN
@@ -270,7 +270,7 @@ echo "== Information Entered ============"
 echo ""
 echo "Local development domain: $DOMAIN"
 
-if [[ $MODE == install-existing-site ]] && [[ $DOMAIN != $OLD_DOMAIN ]]; then
+if [[ $DOMAIN != $OLD_DOMAIN ]]; then
 	echo "Old domain: $OLD_DOMAIN"
 fi
 
@@ -553,7 +553,6 @@ if [[ $MODE == install-remote ]]; then
 
 	echo -e "Updating the remote files..."
 
-
 	# Make the wp-content folder temporary
 	if [[ -d site/wp/tmp_wp-content ]]; then
 		
@@ -575,8 +574,29 @@ if [[ $MODE == install-remote ]]; then
 	echo -e "Remote files update ... ${GREEN}done${RESET}"
 
 
+
 	# Update the permissions
 	permission_update site/
+
+
+
+	# Update old version remote files
+	if [[ -d site/wp-content ]]; then
+
+		echo -e "Old version detected..."
+
+
+		# Remove the old wp-content
+		rm -rf site/wp/wp-content
+
+
+		# Move our wp-content folder
+		mv site/wp-content site/wp/wp-content
+
+
+		echo -e "Old version updated ... ${GREEN}done${RESET}"
+
+	fi
 
 
 
@@ -601,27 +621,6 @@ if [[ $MODE == install-remote ]]; then
 
 	fi
 
-
-fi
-
-
-
-
-# Update old version remote files
-if [[ -d site/wp-content ]]; then
-
-	echo -e "Old version detected..."
-
-
-	# Remove the old wp-content
-	rm -rf site/wp/wp-content
-
-
-	# Move our wp-content folder
-	mv site/wp-content site/wp/wp-content
-
-
-	echo -e "Old version updated ... ${GREEN}done${RESET}"
 
 fi
 
