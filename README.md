@@ -63,12 +63,7 @@ sudo bash uninstall
 	* Installs the Wordpress
 	* Adds the administrator user that's defined in **".env"** file
 		* Hides the admin bar from frontend
-		* Closes the the "Welcome" box on dashboard
-		* Closes the the "Try Gutenberg" box on dashboard
-	* Adds the developer user that's defined in **".env"** file
-		* Hides the admin bar from frontend
-		* Closes the the "Welcome" box on dashboard
-		* Closes the the "Try Gutenberg" box on dashboard
+		* Closes the the "Welcome" box on dashboar
 	* Discourages search engines from indexing this site
 	* Updates the tagline as defined in **".env"** file
 	* Updates the timezone as defined in **".env"** file
@@ -85,7 +80,6 @@ sudo bash uninstall
 	* Adds the **"Blog"** page
 		* Makes it default static posts page
 10. Asks for the BitBucket login info to create a private repository for this site
-11. Runs the Gulp to watch SASS changes (If package.json and gulpfile.js files exist in the active theme folder)
 
 
 ### When Starting *(sudo bash start)*
@@ -106,3 +100,4 @@ sudo bash uninstall
 ### When Uninstalling *(sudo bash uninstall)*
 1. Stops and removes the Docker containers
 2. Removes the development domain name from **"/etc/hosts"** file
+3. Removes the **.env** file from the builder
