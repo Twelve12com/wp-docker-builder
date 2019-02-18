@@ -350,6 +350,10 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	source .env
 
 
+	# Permission fix of the project
+	permission_update ./
+
+
 else
 
 	# If not confirmed, close the installation
