@@ -657,6 +657,7 @@ git_permission_update .git
 
 
 # PRINT THE SITE INFO
+echo -e "${GREEN}Project Installed${RESET}"
 echo ""
 echo ""
 echo "== Site Info ===================="

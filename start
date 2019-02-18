@@ -116,6 +116,7 @@ fi
 
 
 # PRINT THE SITE INFO
+echo -e "${GREEN}Site is up!${RESET}"
 echo ""
 echo ""
 echo "== Site Info ===================="
