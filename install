@@ -140,8 +140,8 @@ if [[ ! -f .env ]]; then
 
 
 
-	# Copy the existing site site/.env file
-	if [[ $MODE == install-existing-site ]] || [[ $MODE == install-remote ]]; then
+	# Use the existing site .env file
+	if [[ -f site/.env ]]; then
 
 		source site/.env
 
