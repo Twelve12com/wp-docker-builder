@@ -434,7 +434,7 @@ if [[ $MODE == install-starter ]]; then
 
 
 	# Download the template
-	git clone https://twelve12com@bitbucket.org/twelve12com/new-wordpress-theme-template.git site/wp/wp-content/themes/${SLUG}/
+	git clone https://github.com/Twelve12com/wp-flexible-starter-template.git site/wp/wp-content/themes/${SLUG}/
 	rm -rf site/wp/wp-content/themes/${SLUG}/.git
 	echo -e "Starter theme clonned ... ${GREEN}done${RESET}"
 
