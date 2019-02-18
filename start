@@ -130,28 +130,46 @@ echo ""
 
 
 
-# If Gulp not installed, build the gulp
-if [[ ! -d site/wp/wp-content/themes/${SLUG}/node_modules ]] || [[ ! -d site/wp/wp-content/themes/${SLUG}/node_modules/gulp ]]; then
-
-
-	# RUN THE GULP
-	echo "GULP is installing..."
-	docker-compose run --no-deps --rm gulp npm run build
-	echo -e "GULP installed ... ${GREEN}done${RESET}"
-
-
-fi
 
 
 
 
-# If Gulp file and package.json exist in theme folder
-if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]] && [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
 
 
-	# RUN THE GULP
-	echo "GULP is running..."
-	docker-compose run --no-deps --rm gulp npm start
+
+
+
+
+# If package.json exist in theme folder
+if [[ -f site/wp/wp-content/themes/${SLUG}/package.json ]]; then
+
+
+
+	# If Gulp not installed, build the gulp
+	if [[ ! -d site/wp/wp-content/themes/${SLUG}/node_modules ]] || [[ ! -d site/wp/wp-content/themes/${SLUG}/node_modules/gulp ]]; then
+
+
+		# RUN THE GULP
+		echo "GULP is installing..."
+		docker-compose run --no-deps --rm gulp npm run build
+		echo -e "GULP installed ... ${GREEN}done${RESET}"
+
+
+	fi
+
+
+
+	# If Gulp file exist in theme folder
+	if [[ -f site/wp/wp-content/themes/${SLUG}/gulpfile.js ]]; then
+
+
+		# RUN THE GULP
+		echo "GULP is running..."
+		docker-compose run --no-deps --rm gulp npm start
+
+
+	fi
+
 
 
 fi
