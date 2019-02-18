@@ -3,10 +3,8 @@ source global.sh
 
 
 
-
 # Builder updates
 self_update
-
 
 
 
@@ -19,9 +17,9 @@ if [[ ! -f .env ]]; then
 fi
 
 
+
 # Get data from .env file
 source .env
-
 
 
 
@@ -31,19 +29,15 @@ docker-compose down
 
 
 
-
 # Remove the host to the list
 sudo bash config/etc-hosts.sh -remove $DOMAIN
 killall -HUP mDNSResponder
-echo -e "'$DOMAIN - $IP' Removed from the etc/hosts file ... ${GREEN}done${RESET}"
-
 
 
 
 # Delete the .env file
 rm .env
 echo -e ".env file removed from the builder ... ${GREEN}done${RESET}"
-
 
 
 
