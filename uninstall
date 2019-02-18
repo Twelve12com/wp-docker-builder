@@ -4,6 +4,12 @@ source global.sh
 
 
 
+# Builder updates
+self_update
+
+
+
+
 # Install if not already
 if [[ ! -f .env ]]; then
 
@@ -15,12 +21,6 @@ fi
 
 # Get data from .env file
 source .env
-
-
-
-
-# Builder updates
-self_update
 
 
 
