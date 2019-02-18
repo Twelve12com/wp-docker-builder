@@ -309,7 +309,11 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 
 	# Update the project folder name
-	mv -f ../wp-docker-builder/ ../$SLUG
+	if [[ -d ../wp-docker-builder/ ]]; then
+
+		mv ../wp-docker-builder/ ../$SLUG
+
+	fi
 
 
 	# Create the .env file from the template (local.env)
