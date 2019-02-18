@@ -505,83 +505,33 @@ if [[ $MODE == install-starter ]]; then
 			echo -e "Commit the changes ... ${GREEN}done${RESET}"
 
 
-
-
-			read -ep "Bitbucket Repo Name ($SLUG): " reponame
-			if [[ -z "$reponame" ]]; then
-				reponame=$SLUG
-				echo "Using '$reponame'"
-			fi
-
-
-			read -ep "Bitbucket Username (Twelve12com): " username
-			if [[ -z "$username" ]]; then
-				username=Twelve12com
-				echo "Using '$username'"
-			fi
-
-
-			echo 'Bitbucket Password:'
+			echo 'Twelve12 Bitbucket Password:'
 			read -s password  # -s flag hides password text
 
+			read -ep "Would you like to retype the password? (yes | no): " retypepass
+			if [[ $retypepass == "yes" ]]; then
 
-			# Confirm the information
-			echo ""
-			echo ""
-			echo "== Site Info ===================="
-			echo ""
-			echo "Bitbucket Repo Name: $reponame"
-			echo "Bitbucket Username: $username"
-			echo "Bitbucket Password: *********"
-			echo ""
-			echo "================================="
-			echo ""
-			echo ""
-
-
-			read -ep "Are these information correct? (yes | retype): " gitconfirm
-			if [[ $gitconfirm == retype ]]; then
-
-
-				read -ep "Bitbucket Repo Name ($SLUG): " reponame
-				if [[ -z "$reponame" ]]; then
-					reponame=$SLUG
-					echo "Using '$reponame'"
-				fi
-
-
-				read -ep "Bitbucket Username (Twelve12com): " username
-				if [[ -z "$username" ]]; then
-					username=Twelve12com
-					echo "Using '$username'"
-				fi
-
-
-				echo 'Bitbucket Password:'
+				echo 'Twelve12 Bitbucket Password:'
 				read -s password  # -s flag hides password text
 
-
 			fi
-
-
 
 
 			# Create a private repo
-			curl POST -v -u $username:$password  -H "Content-Type: application/json" \
-		https://api.bitbucket.org/2.0/repositories/$username/$reponame \
+			curl POST -v -u twelve12com:$password  -H "Content-Type: application/json" \
+		https://api.bitbucket.org/2.0/repositories/twelve12com/$SLUG \
 		-d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
 			echo ""
 			echo -e "Create a private repo ... ${GREEN}done${RESET}"
 
 
 			# Add the origin
-			git remote add origin https://$username@bitbucket.org/$username/$reponame.git
+			git remote add origin https://twelve12com@bitbucket.org/twelve12com/$SLUG.git
 			echo -e "Add the origin ... ${GREEN}done${RESET}"
 
 
 			# Push the changes
 			git push -u origin --all
-			git push -u origin --tags
 			echo -e "Push the files ... ${GREEN}done${RESET}"
 
 
@@ -597,7 +547,7 @@ fi
 
 
 
-# DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
+# Update the remote files
 if [[ $MODE == install-remote ]]; then
 
 
@@ -634,7 +584,7 @@ fi
 
 
 
-# Old version remote files
+# Update old version remote files
 if [[ -d site/wp-content ]]; then
 
 	echo -e "Old version detected..."
@@ -655,7 +605,7 @@ fi
 
 
 
-# DB REPLACEMENTS IF INSTALLING SITE FROM REMOTE
+# URL replacements
 if [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
 
