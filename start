@@ -52,6 +52,25 @@ DB_SUM1=$(md5 -r $DB_FILE)
 )
 
 
+# Update old version remote files
+if [[ -d site/wp-content ]]; then
+
+	echo -e "Old version detected..."
+
+
+	# Remove the old wp-content
+	rm -rf site/wp/wp-content
+
+
+	# Move our wp-content folder
+	mv site/wp-content site/wp/wp-content
+
+
+	echo -e "Old version updated ... ${GREEN}done${RESET}"
+
+fi
+
+
 # DETECT DB CHANGES
 DB_SUM2=$(md5 -r $DB_FILE)
 if [[ $DB_SUM1 != $DB_SUM2 ]]; then
