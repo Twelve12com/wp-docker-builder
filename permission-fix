@@ -2,13 +2,37 @@
 source global.sh
 
 
+# Do all by default
+ACTION=all
+
+
+# Specific actions
+if [[ $1 == git ]] || [[ $1 == server ]] || [[ $1 == permission ]]; then
+
+	ACTION=$1
+
+fi
+
+
 # Git permissions update
-git_permission_update site/.git
+if [[ $ACTION == all ]] || [[ $ACTION == git ]]; then
+
+	git_permission_update site/.git
+
+fi
 
 
 # Server permission update
-server_permission_update /var/www/html/
+if [[ $ACTION == all ]] || [[ $ACTION == server ]]; then
+
+	server_permission_update /var/www/html/
+
+fi
 
 
 # Local file permission update
-permission_update site/
+if [[ $ACTION == all ]] || [[ $ACTION == permission ]]; then
+
+	permission_update site/
+
+fi
