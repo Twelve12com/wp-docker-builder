@@ -35,6 +35,12 @@ killall -HUP mDNSResponder
 
 
 
+# Delete the DB files
+rm -rf site/database/mysql/
+echo -e "MySQL files removed ... ${GREEN}done${RESET}"
+
+
+
 # Delete the .env file
 rm .env
 echo -e ".env file removed from the builder ... ${GREEN}done${RESET}"
