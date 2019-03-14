@@ -122,3 +122,55 @@ function git_permission_update () {
 function wp {
 	command docker-compose run --no-deps --rm wpcli --allow-root "$@"
 }
+
+
+function db_backup () {
+
+	# Save the DB backup
+	echo "Backing up the DB..."
+	DB_FILE=site/database/dump/wordpress_data.sql
+	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > $DB_FILE
+	tail -n +2 "$DB_FILE" > "$DB_FILE.tmp" && mv "$DB_FILE.tmp" "$DB_FILE"
+	echo -e "DB Backup saved in '$DB_FILE' ... ${GREEN}done${RESET}"
+
+}
+
+
+function search_replace () {
+
+
+	FIND_DOMAIN=$1
+	REPLACE_DOMAIN=$2
+
+	# Remove the protocol
+	find1="https://"
+	find2="http://"
+	replace=""
+	FIND_DOMAIN="${FIND_DOMAIN/$find1/$replace}"
+	FIND_DOMAIN="${FIND_DOMAIN/$find2/$replace}"
+
+	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find1/$replace}"
+	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find2/$replace}"
+
+
+	echo -e "DB replacements starting ($FIND_DOMAIN -> $REPLACE_DOMAIN)..."
+	
+	# Force HTTP
+	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only
+
+	# Domain change
+	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only
+
+	# Email corrections !!! TO-DO
+	#wp search-replace "@${REPLACE_DOMAIN}" "@${FIND_DOMAIN}" --recurse-objects --report-changed-only
+
+	echo -e "DB replacements from '$FIND_DOMAIN' to '$REPLACE_DOMAIN' ... ${GREEN}done${RESET}"
+
+
+
+	# Rewrite Flush
+	echo -e "Flushing the rewrite rules..."
+	wp rewrite flush --hard
+	echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
+
+}

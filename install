@@ -50,20 +50,19 @@ fi
 if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ ]]; then
 
 
-	# Check for the existing .env file
-	if [[ ! -f site/.env ]]; then
-
-		echo -e "${RED}ERROR:${RESET} Missing .env file in site/ folder."
-		exit
-
-	fi
-
-
 	MODE=install-existing-site
 	# 1. Check IP and Create Host *
 	# 2. Build the server *
 	# 3. URL replace on DB *
 	# 4. Print the site info *
+
+
+	# Check for the existing .env file
+	if [[ ! -f site/.env ]]; then
+
+		MODE=import-existing-site
+
+	fi
 
 fi
 
@@ -193,12 +192,18 @@ if [[ ! -f .env ]]; then
 
 
 
-	# Ask other info when creating website from scratch
-	if [[ $MODE == install-starter ]]; then
-
+	# When installing starter or importing an existing site
+	if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
 
 		read -ep "Project Name (${SLUG}): " slug
 		[[ ! -z "$slug" ]] && SLUG=$slug || echo "Using '${SLUG}'"
+
+	fi
+
+
+
+	# Ask other info when creating website from scratch
+	if [[ $MODE == install-starter ]]; then
 
 
 		read -ep "Website Name (${NAME}): " name
@@ -474,81 +479,9 @@ if [[ $MODE == install-starter ]]; then
 	source wp.sh
 
 
-	# Save the DB backup
-	DB_FILE=site/database/dump/wordpress_data.sql
-	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > $DB_FILE
-	tail -n +2 "$DB_FILE" > "$DB_FILE.tmp" && mv "$DB_FILE.tmp" "$DB_FILE"
-	echo -e "DB Backup saved in '$DB_FILE' ... ${GREEN}done${RESET}"
+	# Save the initial DB backup
+	db_backup
 
-
-	read -ep "Would you like to create new this project to Git? (type 'no' if you don't want): " gitconfirm
-	if [[ $gitconfirm != no ]]; then
-
-
-		# Initiate git
-		(
-
-			# Open the site directory
-			cd site/
-			echo -e "Open the site directory ... ${GREEN}done${RESET}"
-
-
-			# Initiate Git
-			git init
-			echo -e "Initiate Git ... ${GREEN}done${RESET}"
-
-
-			# Stage all the changes
-			git add -A .
-			echo -e "Stage all the changes ... ${GREEN}done${RESET}"
-
-
-			# Show the git status
-			git status
-			echo -e "Show the git status ... ${GREEN}done${RESET}"
-
-
-			# Commit the changes
-			git commit -m "Initial commit"
-			echo -e "Commit the changes ... ${GREEN}done${RESET}"
-
-
-			echo 'Twelve12 Bitbucket Password:'
-			read -s password  # -s flag hides password text
-
-			read -ep "Would you like to retype the password? (yes | no): " retypepass
-			if [[ $retypepass == "yes" ]]; then
-
-				echo 'Twelve12 Bitbucket Password:'
-				read -s password  # -s flag hides password text
-
-			fi
-
-
-			# Create a private repo
-			curl POST -v -u twelve12com:$password  -H "Content-Type: application/json" \
-		https://api.bitbucket.org/2.0/repositories/twelve12com/$SLUG \
-		-d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
-			echo ""
-			echo -e "Create a private repo ... ${GREEN}done${RESET}"
-
-
-			# Add the origin
-			git remote add origin https://twelve12com@bitbucket.org/twelve12com/$SLUG.git
-			echo -e "Add the origin ... ${GREEN}done${RESET}"
-
-
-			# Push the changes
-			git push -u origin --all
-			echo -e "Push the files ... ${GREEN}done${RESET}"
-
-
-			# Update .git permissions
-			permission_update .git
-		)
-
-
-	fi
 
 fi
 
@@ -635,14 +568,109 @@ fi
 
 
 
+# Check the old site URL when importing
+if [[ $MODE == import-existing-site ]]; then
+
+
+	echo -e "Checking registered domain name..."
+	OLD_DOMAIN=$(wp option get siteurl)
+	echo -e "Registered domain name: $OLD_DOMAIN"
+
+
+fi
+
+
+
+
 # URL replacements
 if [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
 
-	echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN)..."
-	wp search-replace "${OLD_DOMAIN}" "${DOMAIN}" --recurse-objects --report-changed-only --skip-columns=guid --skip-tables=wp_users
-	echo -e "DB replacements from '$OLD_DOMAIN' to '$DOMAIN' ... ${GREEN}done${RESET}"
+	# Do the replacements
+	search_replace $OLD_DOMAIN $DOMAIN
 
+
+fi
+
+
+
+
+# Ask for the git initialization
+if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
+
+
+	read -ep "Would you like to create new this project to Git? (type 'no' if you don't want): " gitconfirm
+	if [[ $gitconfirm != no ]]; then
+
+
+		# Save the initial DB backup
+		db_backup
+
+
+		# Initiate git
+		(
+
+			# Open the site directory
+			cd site/
+			echo -e "Open the site directory ... ${GREEN}done${RESET}"
+
+
+			# Initiate Git
+			git init
+			echo -e "Initiate Git ... ${GREEN}done${RESET}"
+
+
+			# Stage all the changes
+			git add -A .
+			echo -e "Stage all the changes ... ${GREEN}done${RESET}"
+
+
+			# Show the git status
+			git status
+			echo -e "Show the git status ... ${GREEN}done${RESET}"
+
+
+			# Commit the changes
+			git commit -m "Initial commit"
+			echo -e "Commit the changes ... ${GREEN}done${RESET}"
+
+
+			echo 'Twelve12 Bitbucket Password:'
+			read -s password  # -s flag hides password text
+
+			read -ep "Would you like to retype the password? (yes | no): " retypepass
+			if [[ $retypepass == "yes" ]]; then
+
+				echo 'Twelve12 Bitbucket Password:'
+				read -s password  # -s flag hides password text
+
+			fi
+
+
+			# Create a private repo
+			curl POST -v -u twelve12com:$password  -H "Content-Type: application/json" \
+		https://api.bitbucket.org/2.0/repositories/twelve12com/$SLUG \
+		-d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
+			echo ""
+			echo -e "Create a private repo ... ${GREEN}done${RESET}"
+
+
+			# Add the origin
+			git remote add origin https://twelve12com@bitbucket.org/twelve12com/$SLUG.git
+			echo -e "Add the origin ... ${GREEN}done${RESET}"
+
+
+			# Push the changes
+			git push -u origin --all
+			echo -e "Push the files ... ${GREEN}done${RESET}"
+
+
+			# Update .git permissions
+			permission_update .git
+		)
+
+
+	fi
 
 fi
 

@@ -1,0 +1,43 @@
+#!/bin/bash
+source global.sh
+
+
+
+
+# Get data from local.env file
+source local.env
+
+
+# Get data from .env file
+if [[ -f .env ]]; then
+
+	source .env
+
+fi
+
+
+
+
+# Builder updates
+self_update
+
+
+
+
+# Check the old site URL when importing
+echo -e "Checking registered domain name..."
+OLD_DOMAIN=$(wp option get siteurl)
+echo -e "Registered domain name: $OLD_DOMAIN"
+
+
+
+
+# URL replacements
+if [[ $DOMAIN != $OLD_DOMAIN ]]; then
+
+
+	# Do the replacements
+	search_replace $OLD_DOMAIN $DOMAIN
+
+
+fi
