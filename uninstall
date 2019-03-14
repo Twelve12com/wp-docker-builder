@@ -40,6 +40,12 @@ rm -rf site/database/mysql/
 echo -e "MySQL files removed ... ${GREEN}done${RESET}"
 
 
+(
+	cd site/wp/
+	find . -mindepth 1 -maxdepth 1 ! -name 'wp-content' -exec rm -rf '{}' \;
+)
+echo -e "WP core files removed ... ${GREEN}done${RESET}"
+
 
 # Delete the .env file
 rm .env
