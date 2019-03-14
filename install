@@ -201,7 +201,7 @@ if [[ ! -f .env ]]; then
 		[[ ! -z "$slug" ]] && SLUG=$slug || echo "Using '${SLUG}'"
 
 
-		read -ep "Domain Name (${PREFIX}): " prefix
+		read -ep "Domain Name & The Prefix (${PREFIX}): " prefix
 		[[ ! -z "$prefix" ]] && PREFIX=$prefix || echo "Using '${PREFIX}'"
 
 	fi
@@ -274,11 +274,11 @@ fi
 
 echo ""
 echo "Project Name: $SLUG"
+echo "Test Domain Name: $PREFIX"
 
 if [[ $MODE == install-starter ]]; then
 	echo "Website Name: $NAME"
 	echo "Website Tagline: $DESC"
-	echo "Function Prefixes: $PREFIX"
 	[[ ! -z "$plugins" ]] && echo "Plugins: $plugins" || echo "Plugins: $PLUGINS"
 	echo ""
 
