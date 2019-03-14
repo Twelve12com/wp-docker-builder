@@ -567,7 +567,7 @@ if [[ $MODE == import-existing-site ]]; then
 
 	echo -e "Checking registered domain name..."
 	OLD_DOMAIN="$(wp option get siteurl)"
-	echo -e "Registered domain name: ${OLD_DOMAIN}"
+	echo "Registered domain name: ${OLD_DOMAIN}"
 
 
 fi

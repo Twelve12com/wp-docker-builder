@@ -153,7 +153,7 @@ function search_replace {
 	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find2/$replace}"
 
 
-	echo -e "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
+	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
 	
 	# Force HTTP
 	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only
@@ -164,7 +164,7 @@ function search_replace {
 	# Email corrections !!! TO-DO
 	#wp search-replace "@${REPLACE_DOMAIN}" "@${FIND_DOMAIN}" --recurse-objects --report-changed-only
 
-	echo -e "DB replacements from '${FIND_DOMAIN}' to '${REPLACE_DOMAIN}' ... ${GREEN}done${RESET}"
+	echo "DB replacements from '${FIND_DOMAIN}' to '${REPLACE_DOMAIN}' ... ${GREEN}done${RESET}"
 
 
 
