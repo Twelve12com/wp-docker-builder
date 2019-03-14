@@ -7,6 +7,8 @@ source global.sh
 # Get data from local.env file
 source local.env
 
+DEFAULT_PLUGINS=$PLUGINS
+
 
 # Get data from .env file
 if [[ -f .env ]]; then
@@ -219,16 +221,7 @@ if [[ ! -f .env ]]; then
 
 
 		read -ep "Plugins that need to be installed (${PLUGINS}): " plugins
-		if [[ -z "$plugins" ]]; then
-
-			NEW_PLUGINS=$PLUGINS
-			echo "Using '${NEW_PLUGINS}'"
-
-		else
-
-			NEW_PLUGINS=$plugins
-
-		fi
+		[[ ! -z "$plugins" ]] && PLUGINS=$plugins || echo "Using '${PLUGINS}'"
 
 
 		# Ask for the admin info
@@ -286,7 +279,7 @@ if [[ $MODE == install-starter ]]; then
 	echo "Website Name: $NAME"
 	echo "Website Tagline: $DESC"
 	echo "Function Prefixes: $PREFIX"
-	[[ ! -z "$plugins" ]] && echo "Plugins: $NEW_PLUGINS" || echo "Plugins: $PLUGINS"
+	[[ ! -z "$plugins" ]] && echo "Plugins: $plugins" || echo "Plugins: $PLUGINS"
 	echo ""
 
 	if [[ $DEVELOPER_EMAIL != webdesign@twelve12.com ]]; then
@@ -335,7 +328,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	sedreplace "s/Site Name/$NAME/g" .env;
 	sedreplace "s/Site tagline/$DESC/g" .env;
 	sedreplace "s/PREFIX=sitename/PREFIX=$PREFIX/g" .env;
-	sedreplace "s/$PLUGINS/$NEW_PLUGINS/g" .env;
+	sedreplace "s/$DEFAULT_PLUGINS/$PLUGINS/g" .env;
 
 	sedreplace "s/DEVELOPER_USERNAME=Username/DEVELOPER_USERNAME=$DEVELOPER_USERNAME/g" .env;
 	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" .env;
