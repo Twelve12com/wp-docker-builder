@@ -580,7 +580,7 @@ if [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
 
 	# Do the replacements
-	search_replace $OLD_DOMAIN $DOMAIN
+	search_replace "${OLD_DOMAIN}" "${DOMAIN}"
 
 
 fi
