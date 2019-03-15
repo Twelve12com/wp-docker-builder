@@ -38,20 +38,11 @@ source .env
 
 	# Ask for the commit message
 	read -ep "Commit Message: " COMMIT_MESSAGE
-	if [[ -z "$COMMIT_MESSAGE" ]]; then
+	while [[ -z "$COMMIT_MESSAGE" ]]; do 
 
 		read -ep "Commit Message: " COMMIT_MESSAGE
-		if [[ -z "$COMMIT_MESSAGE" ]]; then
 
-			read -ep "Commit Message: " COMMIT_MESSAGE
-
-		else
-
-			exit
-
-		fi
-
-	fi
+	done
 
 
 	# Commit the changes
