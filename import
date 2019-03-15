@@ -48,4 +48,8 @@ wait_for_mysql
 db_url_update
 
 
+# Backup the DB after the changes
+db_backup
+
+
 echo -e "IMPORTING NEW DB ${GREEN}COMPLETE${RESET}"
