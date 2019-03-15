@@ -24,22 +24,5 @@ self_update
 
 
 
-# Check the old site URL when importing
-echo -e "Checking registered domain name..."
-#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
-wp option get siteurl
-read -ep "Write the URL above: " OLD_DOMAIN
-echo "Registered domain name: ${OLD_DOMAIN}"
-
-
-
-
-# URL replacements
-if [[ $DOMAIN != $OLD_DOMAIN ]]; then
-
-
-	# Do the replacements
-	search_replace "${OLD_DOMAIN}" "${DOMAIN}"
-
-
-fi
+# Ask the registered URL and do the replacements
+db_url_update

@@ -153,21 +153,20 @@ function search_replace {
 	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find2/$replace}"
 
 
-	# Check the old site URL when importing
-	echo -e "Checking registered domain name..."
-	#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
+	# Show the old site URL
+	echo -e "Registered domain name is..."
 	wp option get siteurl
-	#read -ep "Write the URL above: " OLD_DOMAIN
-	#echo "Registered domain name: ${OLD_DOMAIN}"
 
 
 	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
 	
 	# Force HTTP
+	echo -e "Http forcing..."
 	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only
 	echo -e "Http force ... ${GREEN}done${RESET}"
 
 	# Domain change
+	echo -e "Domain changing..."
 	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only
 	echo -e "Domain change ... ${GREEN}done${RESET}"
 
@@ -182,5 +181,29 @@ function search_replace {
 	echo -e "Flushing the rewrite rules..."
 	wp rewrite flush --hard
 	echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
+
+}
+
+
+function db_url_update () {
+
+
+
+	echo -e "Checking registered domain name..."
+	#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
+	wp option get siteurl
+	read -ep "Write the URL above: " OLD_DOMAIN
+	echo "Registered domain name: ${OLD_DOMAIN}"
+
+
+	# URL replacements
+	if [[ $DOMAIN != $OLD_DOMAIN ]]; then
+
+		# Do the replacements
+		search_replace "${OLD_DOMAIN}" "${DOMAIN}"
+
+	fi
+
+
 
 }
