@@ -562,7 +562,7 @@ fi
 
 
 # Check the old site URL when importing
-if [[ $MODE == import-existing-site ]]; then
+if [[ $MODE == install-existing-site ]] || [[ $MODE == import-existing-site ]]; then
 
 
 	echo -e "Checking registered domain name..."
