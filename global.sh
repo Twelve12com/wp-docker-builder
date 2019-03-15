@@ -153,11 +153,6 @@ function search_replace {
 	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find2/$replace}"
 
 
-	# Show the old site URL
-	echo -e "Registered domain name is..."
-	wp option get siteurl
-
-
 	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
 	
 	# Force HTTP
