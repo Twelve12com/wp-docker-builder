@@ -153,13 +153,23 @@ function search_replace {
 	REPLACE_DOMAIN="${REPLACE_DOMAIN/$find2/$replace}"
 
 
+	# Check the old site URL when importing
+	echo -e "Checking registered domain name..."
+	#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
+	wp option get siteurl
+	#read -ep "Write the URL above: " OLD_DOMAIN
+	#echo "Registered domain name: ${OLD_DOMAIN}"
+
+
 	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
 	
 	# Force HTTP
 	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only
+	echo -e "Http force ... ${GREEN}done${RESET}"
 
 	# Domain change
 	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only
+	echo -e "Domain change ... ${GREEN}done${RESET}"
 
 	# Email corrections !!! TO-DO
 	#wp search-replace "@${REPLACE_DOMAIN}" "@${FIND_DOMAIN}" --recurse-objects --report-changed-only
