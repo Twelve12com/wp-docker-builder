@@ -188,7 +188,6 @@ function search_replace {
 function db_url_update () {
 
 
-
 	echo -e "Checking registered domain name..."
 	#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
 	wp option get siteurl
@@ -204,6 +203,19 @@ function db_url_update () {
 
 	fi
 
+
+}
+
+
+function wait_for_mysql () {
+
+
+	# Check MySQL to be ready
+	while ! docker-compose exec db mysqladmin --user=root --password=password --host "${IP}" ping --silent &> /dev/null ; do
+		echo "Waiting for database connection..."
+		sleep 3
+	done
+	echo -e "MySQL is ready! ... ${GREEN}done${RESET}"
 
 
 }

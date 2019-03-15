@@ -22,7 +22,30 @@ fi
 self_update
 
 
+echo "IMPORTING NEW DB STARTED"
+
+
+echo "Closing server..."
+docker-compose down
+echo -e "Server is down ... ${GREEN}done${RESET}"
+
+
+echo "Old data removing..."
+rm -rf site/database/mysql/
+echo -e "Remove old data ... ${GREEN}done${RESET}"
+
+
+echo "Site is building again..."
+docker-compose up -d
+echo -e "Build server again ... ${GREEN}done${RESET}"
+
+
+# Check MySQL to be ready
+wait_for_mysql
 
 
 # Ask the registered URL and do the replacements
 db_url_update
+
+
+echo -e "IMPORTING NEW DB ${GREEN}COMPLETE${RESET}"

@@ -92,23 +92,12 @@ if [[ $DB_SUM1 != $DB_SUM2 ]]; then
 
 
 	# Check MySQL to be ready
-	while ! docker-compose exec db mysqladmin --user=root --password=password --host "${IP}" ping --silent &> /dev/null ; do
-		echo "Waiting for database connection..."
-		sleep 3
-	done
-	echo -e "MySQL is ready! ... ${GREEN}done${RESET}"
+	wait_for_mysql
 
 
-	# Do the URL replacements if needed
-	if [[ $DOMAIN != $OLD_DOMAIN ]]; then
 
-
-		echo -e "DB replacements starting ($OLD_DOMAIN -> $DOMAIN)..."
-		wp search-replace "${OLD_DOMAIN}" "${DOMAIN}" --recurse-objects --report-changed-only --skip-columns=guid --skip-tables=wp_users
-		echo -e "DB replacements from '$OLD_DOMAIN' to '$DOMAIN' ... ${GREEN}done${RESET}"
-
-
-	fi
+	# Ask the registered URL and do the replacements
+	db_url_update
 
 
 else
