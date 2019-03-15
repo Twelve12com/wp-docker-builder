@@ -4,16 +4,20 @@ source global.sh
 
 
 
-# Get data from local.env file
-source local.env
+# Install if not already
+if [[ $IP == 127.0.0.1 ]] || [[ ! -f .env ]]; then
+
+	echo "Redirecting to installation..."
+	bash install
+	exit
+
+fi
+
+
 
 
 # Get data from .env file
-if [[ -f .env ]]; then
-
-	source .env
-
-fi
+source .env
 
 
 
