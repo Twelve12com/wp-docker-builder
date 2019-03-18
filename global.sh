@@ -129,7 +129,7 @@ function db_backup () {
 	# Save the DB backup
 	echo "Backing up the DB..."
 	DB_FILE=site/database/dump/wordpress_data.sql
-	wp db export --porcelain=$DB_FILE
+	wp db export --porcelain=$DB_FILE # Exclude some tables???
 	echo -e "DB Backup saved in '$DB_FILE' ... ${GREEN}done${RESET}"
 
 }
