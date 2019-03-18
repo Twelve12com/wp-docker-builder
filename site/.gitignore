@@ -1,5 +1,5 @@
 database/mysql
-node_modules
+wp/wp-content/themes/*/node_modules
 .DS_Store
 wp/*
 !wp/wp-content
