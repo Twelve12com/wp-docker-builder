@@ -157,12 +157,12 @@ function search_replace {
 	
 	# Force HTTP
 	echo -e "Http forcing..."
-	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only
+	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only --all-tables
 	echo -e "Http force ... ${GREEN}done${RESET}"
 
 	# Domain change
 	echo -e "Domain changing..."
-	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only
+	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only --all-tables
 	echo -e "Domain change ... ${GREEN}done${RESET}"
 
 	# Email corrections !!! TO-DO
