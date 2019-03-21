@@ -154,28 +154,43 @@ function search_replace {
 
 
 	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
-	
-	# Force HTTP
-	echo -e "Http forcing..."
-	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only --all-tables
-	echo -e "Http force ... ${GREEN}done${RESET}"
-
-	# Domain change
-	echo -e "Domain changing..."
-	wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only --all-tables
-	echo -e "Domain change ... ${GREEN}done${RESET}"
-
-	# Email corrections !!! TO-DO
-	#wp search-replace "@${REPLACE_DOMAIN}" "@${FIND_DOMAIN}" --recurse-objects --report-changed-only
-
-	echo -e "DB replacements from '${FIND_DOMAIN}' to '${REPLACE_DOMAIN}' ... ${GREEN}done${RESET}"
 
 
+	# Check the same values
+	if [[ $FIND_DOMAIN != $REPLACE_DOMAIN ]]; then
 
-	# Rewrite Flush
-	echo -e "Flushing the rewrite rules..."
-	wp rewrite flush --hard
-	echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
+
+		# Force HTTP
+		echo -e "Http forcing..."
+		wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only --all-tables
+		echo -e "Http force ... ${GREEN}done${RESET}"
+
+		# Domain change
+		echo -e "Domain changing..."
+		wp search-replace "${FIND_DOMAIN}" "${REPLACE_DOMAIN}" --recurse-objects --report-changed-only --all-tables
+		echo -e "Domain change ... ${GREEN}done${RESET}"
+
+		# Email corrections !!! TO-DO
+		#wp search-replace "@${REPLACE_DOMAIN}" "@${FIND_DOMAIN}" --recurse-objects --report-changed-only
+
+		echo -e "DB replacements from '${FIND_DOMAIN}' to '${REPLACE_DOMAIN}' ... ${GREEN}done${RESET}"
+
+
+
+		# Rewrite Flush
+		echo -e "Flushing the rewrite rules..."
+		wp rewrite flush --hard
+		echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
+
+
+	else
+
+
+		echo -e "${GREEN}Values are the same. ${RESET}"
+
+
+	fi
+
 
 }
 
@@ -191,7 +206,7 @@ function db_url_update () {
 
 
 	# URL replacements
-	if [[ $DOMAIN != $OLD_DOMAIN ]]; then
+	if [[ $OLD_DOMAIN != "http://${DOMAIN}" ]]; then
 
 		# Do the replacements
 		search_replace "${OLD_DOMAIN}" "${DOMAIN}"
