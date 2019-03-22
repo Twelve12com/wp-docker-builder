@@ -39,6 +39,33 @@ rm -rf site/database/mysql/
 echo -e "Remove old data ... ${GREEN}done${RESET}"
 
 
+# Move the new files to be imported
+if [[ -d site/import ]]; then
+
+
+	# Move the SQL file
+	if [[ -f site/import/*.sql ]]; then
+
+		mv site/import/*.sql site/database/dump/wordpress_data.sql
+
+	fi
+
+
+	# Move the wp-content folder
+	if [[ -d site/import/wp-content ]]; then
+
+		rm -rf site/wp/wp-content
+		mv site/import/wp-content site/wp/wp-content
+
+	fi
+
+
+fi
+
+
+
+
+
 echo "Site is building again..."
 docker-compose up -d
 echo -e "Build server again ... ${GREEN}done${RESET}"
