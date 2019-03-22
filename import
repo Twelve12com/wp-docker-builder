@@ -44,7 +44,7 @@ if [[ -d site/import ]]; then
 
 
 	# Move the SQL file
-	count='ls -1 site/import/*.sql 2>/dev/null | wc -l'
+	count=`ls -1 site/import/*.sql 2>/dev/null | wc -l`
 	if [[ $count == 1 ]]; then 
 
 		rm -rf site/database/dump/wordpress_data.sql
