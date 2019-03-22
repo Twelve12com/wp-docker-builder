@@ -5,6 +5,11 @@ RESET='\033[0m' # No Color
 
 
 
+BASEDIR=$(dirname "$0")
+echo -e "${RED}BASEDIR: ${RESET} $BASEDIR"
+
+
+
 
 # CHECK DOCKER WHETHER OR NOT RUNNING
 rep=$(docker ps -q &>/dev/null)
