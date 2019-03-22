@@ -35,7 +35,7 @@ echo -e "Server is down ... ${GREEN}done${RESET}"
 
 
 echo "Old data removing..."
-rm -rf ${BASEDIR}/site/database/mysql/
+rm -rf "${BASEDIR}/site/database/mysql/"
 echo -e "Remove old data ... ${GREEN}done${RESET}"
 
 
@@ -47,8 +47,8 @@ if [[ -d ${BASEDIR}/site/import ]]; then
 	if ls ${BASEDIR}/site/import/*.sql &>/dev/null
 	then
 
-		rm -rf ${BASEDIR}/site/database/dump/wordpress_data.sql
-		mv ${BASEDIR}/site/import/*.sql ${BASEDIR}/site/database/dump/wordpress_data.sql
+		rm -rf "${BASEDIR}/site/database/dump/wordpress_data.sql"
+		mv "${BASEDIR}/site/import/*.sql" "${BASEDIR}/site/database/dump/wordpress_data.sql"
 
 	fi
 
@@ -56,14 +56,14 @@ if [[ -d ${BASEDIR}/site/import ]]; then
 	# Move the wp-content folder
 	if [[ -d ${BASEDIR}/site/import/wp-content ]]; then
 
-		rm -rf ${BASEDIR}/site/wp/wp-content
-		mv ${BASEDIR}/site/import/wp-content ${BASEDIR}/site/wp/wp-content
+		rm -rf "${BASEDIR}/site/wp/wp-content"
+		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/wp-content"
 
 	fi
 
 
 	# Remove the import folder
-	rm -rf ${BASEDIR}/site/import
+	rm -rf "${BASEDIR}/site/import"
 
 
 fi
