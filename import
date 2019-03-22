@@ -62,6 +62,10 @@ if [[ -d site/import ]]; then
 	fi
 
 
+	# Remove the import folder
+	rm -rf site/import
+
+
 fi
 
 
