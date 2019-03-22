@@ -7,7 +7,7 @@ RESET='\033[0m' # No Color
 
 
 # Get project directory
-BASEDIR=$(pwd)
+BASEDIR="$(pwd)"
 echo -e "BASEDIR: ${BASEDIR}"
 
 
@@ -136,7 +136,7 @@ function db_backup () {
 	# Save the DB backup
 	echo "Backing up the DB... ($BASEDIR)"
 	DB_FILE=$BASEDIR/site/database/dump/wordpress_data.sql
-	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > ${DB_FILE}
+	docker-compose exec db /usr/bin/mysqldump -u root --password=password wordpress_data > $DB_FILE
 	tail -n +2 "${DB_FILE}" > "${DB_FILE}.tmp" && mv "${DB_FILE}.tmp" "${DB_FILE}"
 	echo -e "DB Backup saved in '${DB_FILE}' ... ${GREEN}done${RESET}"
 
