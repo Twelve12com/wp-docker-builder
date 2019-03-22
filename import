@@ -101,4 +101,4 @@ db_backup
 
 
 
-echo -e "IMPORTING NEW DB ${GREEN}COMPLETE${RESET}"
+echo -e "IMPORTING ${GREEN}COMPLETE${RESET}"
