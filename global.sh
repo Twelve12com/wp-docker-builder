@@ -8,7 +8,7 @@ RESET='\033[0m' # No Color
 
 # Get project directory
 BASEDIR=$(pwd)
-echo -e "${RED}BASEDIR: ${RESET} ${BASEDIR}"
+echo -e "BASEDIR: ${BASEDIR}"
 
 
 
