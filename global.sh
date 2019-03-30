@@ -245,6 +245,20 @@ function wait_for_mysql () {
 if [[ -d "${BASEDIR}/site/import" ]]; then
 
 
+	# Create target folders if not exist
+	if [[ ! -d "${BASEDIR}/site/database/dump/" ]]; then
+
+		mkdir "${BASEDIR}/site/database/dump/"
+
+	fi
+
+	if [[ ! -d "${BASEDIR}/site/import/wp-content/" ]]; then
+
+		mkdir "${BASEDIR}/site/import/wp-content/"
+
+	fi
+
+
 	# Move the SQL file
 	if [[ -f "${BASEDIR}/site/import/db.sql" ]]; then
 
