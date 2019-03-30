@@ -236,3 +236,44 @@ function wait_for_mysql () {
 
 
 }
+
+
+
+
+# IMPORT DETECTION AND FILE ARRANGEMENTS
+if [[ -d "${BASEDIR}/site/import" ]]; then
+
+
+	# Move the SQL file
+	if [[ -f "${BASEDIR}/site/import/db.sql" ]]; then
+
+		rm -rf "${BASEDIR}/site/database/dump/wordpress_data.sql"
+		mv "${BASEDIR}/site/import/db.sql" "${BASEDIR}/site/database/dump/wordpress_data.sql"
+
+	elif [[ -f "${BASEDIR}/site/import/mysql.sql" ]]; then
+
+		rm -rf "${BASEDIR}/site/database/dump/wordpress_data.sql"
+		mv "${BASEDIR}/site/import/mysql.sql" "${BASEDIR}/site/database/dump/wordpress_data.sql"
+
+	else
+
+		echo -e "${RED}'db.sql' or 'mysql.sql' file does not exist in 'site/import/' folder.${RESET}"
+		exit
+
+	fi
+
+
+	# Move the wp-content folder
+	if [[ -d "${BASEDIR}/site/import/wp-content" ]]; then
+
+		rm -rf "${BASEDIR}/site/wp/wp-content"
+		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/wp-content"
+
+	fi
+
+
+	# Remove the import folder
+	rm -rf "${BASEDIR}/site/import"
+
+
+fi
