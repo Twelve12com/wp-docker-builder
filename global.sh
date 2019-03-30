@@ -246,15 +246,27 @@ if [[ -d "${BASEDIR}/site/import" ]]; then
 
 
 	# Create target folders if not exist
+	if [[ ! -d "${BASEDIR}/site/database/" ]]; then
+
+		mkdir "${BASEDIR}/site/database/"
+
+	fi
+
 	if [[ ! -d "${BASEDIR}/site/database/dump/" ]]; then
 
 		mkdir "${BASEDIR}/site/database/dump/"
 
 	fi
 
-	if [[ ! -d "${BASEDIR}/site/import/wp-content/" ]]; then
+	if [[ ! -d "${BASEDIR}/site/wp/" ]]; then
 
-		mkdir "${BASEDIR}/site/import/wp-content/"
+		mkdir "${BASEDIR}/site/wp/"
+
+	fi
+
+	if [[ ! -d "${BASEDIR}/site/wp/wp-content/" ]]; then
+
+		mkdir "${BASEDIR}/site/wp/wp-content/"
 
 	fi
 
