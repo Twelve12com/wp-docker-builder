@@ -1,5 +1,6 @@
 # Colors
 GREEN='\033[1;32m' # Green
+BLUE='\033[1;34m' # Blue
 RED='\033[1;31m' # Red
 RESET='\033[0m' # No Color
 
