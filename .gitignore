@@ -5,6 +5,9 @@ site/*
 !site/restart
 !site/stop
 !site/permission-fix
+!site/install
+!site/uninstall
+!site/import
 !.gitkeep
 !.gitignore
 .env
