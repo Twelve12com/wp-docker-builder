@@ -164,14 +164,15 @@ function search_replace {
 	echo "DB replacements starting (${FIND_DOMAIN} -> ${REPLACE_DOMAIN})..."
 
 
+	# Force HTTP
+	echo -e "Http forcing..."
+	wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only --all-tables
+	echo -e "Http force ... ${GREEN}done${RESET}"
+
+
 	# Check the same values
 	if [[ $FIND_DOMAIN != $REPLACE_DOMAIN ]]; then
 
-
-		# Force HTTP
-		echo -e "Http forcing..."
-		wp search-replace "https://${FIND_DOMAIN}" "http://${FIND_DOMAIN}" --recurse-objects --report-changed-only --all-tables
-		echo -e "Http force ... ${GREEN}done${RESET}"
 
 		# Domain change
 		echo -e "Domain changing..."
@@ -184,13 +185,6 @@ function search_replace {
 		echo -e "DB replacements from '${FIND_DOMAIN}' to '${REPLACE_DOMAIN}' ... ${GREEN}done${RESET}"
 
 
-
-		# Rewrite Flush
-		echo -e "Flushing the rewrite rules..."
-		wp rewrite flush --hard
-		echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
-
-
 	else
 
 
@@ -198,6 +192,13 @@ function search_replace {
 
 
 	fi
+
+
+
+	# Rewrite Flush
+	echo -e "Flushing the rewrite rules..."
+	wp rewrite flush --hard
+	echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
 
 
 }
