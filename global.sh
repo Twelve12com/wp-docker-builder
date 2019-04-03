@@ -201,6 +201,9 @@ function search_replace {
 	echo -e "Flushing the rewrite rules ... ${GREEN}done${RESET}"
 
 
+	# Save the DB backup
+	db_backup
+
 }
 
 
