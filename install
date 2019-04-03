@@ -543,7 +543,7 @@ fi
 if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
 
 
-	read -ep "Would you like to create new this project to Git? (type 'no' if you don't want): " gitconfirm
+	read -ep "Would you like to create new this project to Git? (Press 'enter' or type 'no'): " gitconfirm
 	if [[ $gitconfirm != no ]]; then
 
 
@@ -582,7 +582,7 @@ if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
 			echo 'Twelve12 Bitbucket Password:'
 			read -s password  # -s flag hides password text
 
-			read -ep "Would you like to retype the password? (yes | no): " retypepass
+			read -ep "Would you like to retype the password? (Press 'enter' or type 'yes'): " retypepass
 			if [[ $retypepass == "yes" ]]; then
 
 				echo 'Twelve12 Bitbucket Password:'
