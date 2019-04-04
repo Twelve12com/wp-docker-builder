@@ -68,7 +68,7 @@ if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
 
 
 	mv "${BASEDIR}/site/database/dump/wordpress_data.sql" "${BASEDIR}/site/export/live.sql"
-	cp "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/" "${BASEDIR}/site/export/${SLUG}/"
+	cp -rf "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/" "${BASEDIR}/site/export/${SLUG}/"
 
 else
 
