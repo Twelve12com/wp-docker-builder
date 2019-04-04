@@ -1,0 +1,90 @@
+#!/bin/bash
+source global.sh
+
+
+
+# # Install if not already
+# if [[ $IP == 127.0.0.1 ]] || [[ ! -f .env ]]; then
+
+# 	echo "Redirecting to installation..."
+# 	bash install
+# 	exit
+
+# fi
+
+
+
+# Get data from .env file
+source .env
+
+
+
+# Builder updates
+self_update
+
+
+
+echo "EXPORTING STARTED"
+
+
+# Ask for the target domain
+read -ep "Target domain (www.domainname.com): " targetdomain
+while [[ -z "$targetdomain" ]]; do 
+
+	read -ep "Target domain (www.domainname.com): " targetdomain
+
+done
+
+
+# Ask for the target protocol
+read -ep "Target protocol (http | https): " targetprotocol
+while [[ $targetprotocol != http ]] && [[ $targetprotocol != https ]]; do 
+
+	read -ep "Target protocol (http | https): " targetprotocol
+
+done
+
+
+
+
+wp search-replace "http://${DOMAIN}" "${targetprotocol}://${targetdomain}" --recurse-objects --report-changed-only --all-tables
+wp search-replace "${DOMAIN}" "${targetdomain}" --recurse-objects --report-changed-only --all-tables
+
+
+# DB Backup
+db_backup
+
+
+# Move the SQL to the export folder
+if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
+
+
+	# Check the 'export' folder
+	if [[ ! -d "${BASEDIR}/site/export/" ]]; then
+
+		mkdir -p "${BASEDIR}/site/export/"
+
+	fi
+
+
+	mv "${BASEDIR}/site/database/dump/wordpress_data.sql" "${BASEDIR}/site/export/live.sql"
+	cp "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/" "${BASEDIR}/site/export/${SLUG}/"
+
+else
+
+	echo -e "${RED}CHANGED SQL FILE NOT FOUND.${RESET}"
+
+fi
+
+
+
+wp search-replace "${targetprotocol}://${targetdomain}" "http://${DOMAIN}" --recurse-objects --report-changed-only --all-tables
+wp search-replace "${targetdomain}" "${DOMAIN}" --recurse-objects --report-changed-only --all-tables
+
+
+# DB Backup
+db_backup
+
+
+
+echo -e "EXPORTING ${GREEN}COMPLETE${RESET}"

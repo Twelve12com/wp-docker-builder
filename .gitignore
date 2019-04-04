@@ -9,6 +9,7 @@ site/*
 !site/install
 !site/uninstall
 !site/import
+!site/export
 !.gitkeep
 !.gitignore
 .env
