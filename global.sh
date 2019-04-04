@@ -9,7 +9,7 @@ RESET='\033[0m' # No Color
 
 # Get project directory
 BASEDIR="$(pwd)"
-echo -e "BASEDIR: ${BASEDIR}"
+#echo -e "BASEDIR: ${BASEDIR}"
 
 
 
@@ -131,7 +131,6 @@ function wp {
 	command docker-compose run --no-deps --rm wpcli --allow-root "$@"
 }
 
-
 function db_backup () {
 
 	# Save the DB backup
@@ -142,7 +141,6 @@ function db_backup () {
 	echo -e "DB Backup saved in '${DB_FILE}' ... ${GREEN}done${RESET}"
 
 }
-
 
 function search_replace {
 
@@ -206,7 +204,6 @@ function search_replace {
 
 }
 
-
 function db_url_update () {
 
 
@@ -228,7 +225,6 @@ function db_url_update () {
 
 }
 
-
 function wait_for_mysql () {
 
 
@@ -242,35 +238,37 @@ function wait_for_mysql () {
 
 }
 
+function move_import_files () {
+
+
+	# If no "import/" folder added yet
+	if [[ ! -d "${BASEDIR}/site/import/" ]]; then
+		
+		echo -e "${BLUE}Please move your 'import/' folder to the '${BASEDIR}/site/' folder and hit enter${RESET}"
+		read IMPORT
+		while [[ ! -d "${BASEDIR}/site/import" ]]; do 
+
+			echo -e "${BLUE}Please move your 'import/' folder to the '${BASEDIR}/site/' folder and hit enter${RESET}"
+			read IMPORT
+
+		done
+
+	fi
 
 
 
-# IMPORT DETECTION AND FILE ARRANGEMENTS
-if [[ -d "${BASEDIR}/site/import" ]]; then
-
+	# IMPORT FOLDER NOW EXISTS
 
 	# Create target folders if not exist
-	if [[ ! -d "${BASEDIR}/site/database/" ]]; then
-
-		mkdir "${BASEDIR}/site/database/"
-
-	fi
-
 	if [[ ! -d "${BASEDIR}/site/database/dump/" ]]; then
 
-		mkdir "${BASEDIR}/site/database/dump/"
-
-	fi
-
-	if [[ ! -d "${BASEDIR}/site/wp/" ]]; then
-
-		mkdir "${BASEDIR}/site/wp/"
+		mkdir -p "${BASEDIR}/site/database/dump/"
 
 	fi
 
 	if [[ ! -d "${BASEDIR}/site/wp/wp-content/" ]]; then
 
-		mkdir "${BASEDIR}/site/wp/wp-content/"
+		mkdir -p "${BASEDIR}/site/wp/wp-content/"
 
 	fi
 
@@ -288,23 +286,35 @@ if [[ -d "${BASEDIR}/site/import" ]]; then
 
 	else
 
-		echo -e "${RED}'db.sql' or 'mysql.sql' file does not exist in 'site/import/' folder.${RESET}"
+		echo -e "${RED}'db.sql' or 'mysql.sql' file does not exist in '${BASEDIR}site/import/' folder.${RESET}"
 		exit
 
 	fi
 
 
-	# Move the wp-content folder
-	if [[ -d "${BASEDIR}/site/import/wp-content" ]]; then
-
-		rm -rf "${BASEDIR}/site/wp/wp-content"
-		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/wp-content"
+	# Remove existing DB files if exists
+	if [[ -d "${BASEDIR}/site/database/mysql/" ]]; then
+	
+		rm -rf "${BASEDIR}/site/database/mysql/"
 
 	fi
 
 
-	# Remove the import folder
-	rm -rf "${BASEDIR}/site/import"
+	# Move the wp-content folder TEMPORARILY
+	if [[ -d "${BASEDIR}/site/import/wp-content/" ]]; then
+
+		rm -rf "${BASEDIR}/site/wp/tmp_wp-content/"
+		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
+
+	fi
 
 
-fi
+	# Remove the import folder if successful
+	if [[ ! -d "${BASEDIR}/site/import/wp-content/" ]] && [[ ! -f "${BASEDIR}/site/import/db.sql" ]] && [[ ! -f "${BASEDIR}/site/import/mysql.sql" ]]; then
+	
+		rm -rf "${BASEDIR}/site/import/"
+
+	fi
+
+
+}

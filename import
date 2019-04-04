@@ -27,6 +27,12 @@ self_update
 echo "IMPORTING STARTED"
 
 
+
+# Move import files
+move_import_files
+
+
+
 echo "Closing server..."
 docker-compose down
 echo -e "Server is down ... ${GREEN}done${RESET}"
@@ -52,11 +58,6 @@ wait_for_mysql
 
 # Ask the registered URL and do the replacements
 db_url_update
-
-
-
-# Backup the DB after the changes
-db_backup
 
 
 

@@ -109,6 +109,12 @@ else
 	# Start the docker containers
 	echo "Starting the server..."
 	docker-compose up -d
+
+
+	# Check MySQL to be ready
+	wait_for_mysql
+
+	
 	echo -e "Server is ${GREEN}up${RESET}"
 
 

@@ -28,7 +28,8 @@ self_update
 
 # CHECK THE PROJECT STATUS
 
-# Default
+# OPTION 1
+# Install the starter theme with Flexible Grid System
 MODE=install-starter
 # 1. Check IP and Create Host *
 # 2. Prepare the starter template *
@@ -40,6 +41,8 @@ MODE=install-starter
 # 8. Run the GULP *
 
 
+
+# OPTION 2
 # Install from a git repo
 if [[ $1 == --remote ]]; then
 
@@ -48,7 +51,19 @@ if [[ $1 == --remote ]]; then
 fi
 
 
-# If DB dump or MySQL files exist
+
+# OPTION 3
+# Import an existing site
+if [[ $1 == --import ]] || [[ -d site/import/ ]]; then
+
+	MODE=import-existing-site
+
+fi
+
+
+
+# OPTION 4
+# Install existing site (If already uninstalled)
 if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ ]]; then
 
 
@@ -58,13 +73,6 @@ if [[ -f site/database/dump/wordpress_data.sql ]] || [[ -d site/database/mysql/ 
 	# 3. URL replace on DB *
 	# 4. Print the site info *
 
-
-	# Check for the existing .env file
-	if [[ ! -f site/.env ]]; then
-
-		MODE=import-existing-site
-
-	fi
 
 fi
 
@@ -128,6 +136,19 @@ if [[ $MODE == install-remote ]]; then
 
 	# Update the permissions
 	permission_update site/
+
+
+fi
+
+
+
+
+# IMPORT AN EXISTING SITE
+if [[ $MODE == import-existing-site ]]; then
+
+
+	# Move import files
+	move_import_files
 
 
 fi
@@ -451,11 +472,11 @@ fi
 
 
 
-# Update the remote files
-if [[ $MODE == install-remote ]]; then
+# Update the temporary files
+if [[ $MODE == install-remote ]] || [[ $MODE == import-existing-site ]]; then
 
 
-	echo -e "Updating the remote files..."
+	echo -e "Updating the temporary files..."
 
 	# Make the wp-content folder temporary
 	if [[ -d site/wp/tmp_wp-content ]]; then
@@ -475,7 +496,7 @@ if [[ $MODE == install-remote ]]; then
 
 	fi
 
-	echo -e "Remote files update ... ${GREEN}done${RESET}"
+	echo -e "Temporary files update ... ${GREEN}done${RESET}"
 
 
 
@@ -532,7 +553,7 @@ fi
 
 
 # Check the old site URL when importing
-if [[ $MODE == install-existing-site ]] || [[ $MODE == import-existing-site ]]; then
+if [[ $MODE == install-remote ]] || [[ $MODE == install-existing-site ]] || [[ $MODE == import-existing-site ]]; then
 
 
 	# Ask the registered URL and do the replacements
@@ -545,7 +566,7 @@ fi
 
 
 # Ask for the git initialization
-if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
+if [[ ! -d site/.git ]]; then
 
 
 	read -ep "Would you like to create new this project to Git? (Press 'enter' or type 'no'): " gitconfirm
@@ -639,6 +660,7 @@ echo ""
 echo ""
 echo "== Site Info ===================="
 echo ""
+echo "Site URL: http://${DOMAIN}"
 echo "Admin Page: http://${DOMAIN}/wp-admin"
 
 if [[ $MODE == install-starter ]]; then
