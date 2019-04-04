@@ -80,7 +80,7 @@ wp theme delete twentysixteen twentyseventeen twentynineteen
 wp plugin delete akismet hello
 
 # Install the necessary plugins
-wp plugin install duplicator prevent-browser-caching --activate
+wp plugin install prevent-browser-caching --activate
 
 # Install selected plugins
 wp plugin install ${PLUGINS}
