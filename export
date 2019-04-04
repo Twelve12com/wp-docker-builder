@@ -70,6 +70,15 @@ if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
 	mv "${BASEDIR}/site/database/dump/wordpress_data.sql" "${BASEDIR}/site/export/live.sql"
 	cp -rf "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/" "${BASEDIR}/site/export/${SLUG}/"
 
+
+	# Delete 'node_modules' folder if exists
+	if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/" ]]; then
+
+		rm -rf "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/"
+
+	fi
+
+
 else
 
 	echo -e "${RED}CHANGED SQL FILE NOT FOUND.${RESET}"
