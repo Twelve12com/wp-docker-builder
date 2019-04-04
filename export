@@ -77,6 +77,12 @@ else
 fi
 
 
+# Permission fix on 'export' folder
+echo -e "Export folder permission fixing..."
+permission_update "${BASEDIR}/site/export/"
+echo -e "Export folder permission fix ... ${GREEN}done${RESET}"
+
+
 
 wp search-replace "${targetprotocol}://${targetdomain}" "http://${DOMAIN}" --recurse-objects --report-changed-only --all-tables
 wp search-replace "${targetdomain}" "${DOMAIN}" --recurse-objects --report-changed-only --all-tables
