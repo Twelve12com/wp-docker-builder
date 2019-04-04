@@ -1,6 +1,7 @@
 logs/*
 site/*
 !site/start
+!site/hardstart
 !site/push
 !site/restart
 !site/stop
