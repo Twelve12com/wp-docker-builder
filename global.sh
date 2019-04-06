@@ -254,6 +254,7 @@ function move_import_files () {
 		done
 
 	fi
+	echo -e "'import' folder detected ... ${GREEN}done${RESET}"
 
 
 
@@ -278,11 +279,13 @@ function move_import_files () {
 
 		rm -rf "${BASEDIR}/site/database/dump/wordpress_data.sql"
 		mv "${BASEDIR}/site/import/db.sql" "${BASEDIR}/site/database/dump/wordpress_data.sql"
+		echo -e "SQL file moved ... ${GREEN}done${RESET}"
 
 	elif [[ -f "${BASEDIR}/site/import/mysql.sql" ]]; then
 
 		rm -rf "${BASEDIR}/site/database/dump/wordpress_data.sql"
 		mv "${BASEDIR}/site/import/mysql.sql" "${BASEDIR}/site/database/dump/wordpress_data.sql"
+		echo -e "SQL file moved ... ${GREEN}done${RESET}"
 
 	else
 
@@ -305,6 +308,7 @@ function move_import_files () {
 
 		rm -rf "${BASEDIR}/site/wp/tmp_wp-content/"
 		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
+		echo -e "'wp-content' folder moved in place temporarily ... ${GREEN}done${RESET}"
 
 	fi
 
@@ -313,6 +317,7 @@ function move_import_files () {
 	if [[ ! -d "${BASEDIR}/site/import/wp-content/" ]] && [[ ! -f "${BASEDIR}/site/import/db.sql" ]] && [[ ! -f "${BASEDIR}/site/import/mysql.sql" ]]; then
 	
 		rm -rf "${BASEDIR}/site/import/"
+		echo -e "'import' folder removed ... ${GREEN}done${RESET}"
 
 	fi
 
