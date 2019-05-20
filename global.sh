@@ -376,25 +376,25 @@ function update_temporary_files () {
 
 
 
-	# Build the GULP
-	if [[ -f "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/package.json" ]]; then
+	# # Build the GULP
+	# if [[ -f "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/package.json" ]]; then
 
 
 
-		# If Gulp not installed, build the gulp
-		if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules" ]] || [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/gulp" ]]; then
+	# 	# If Gulp not installed, build the gulp
+	# 	if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules" ]] || [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/gulp" ]]; then
 
 
-			# RUN THE GULP
-			echo "GULP is installing..."
-			docker-compose run --no-deps --rm gulp npm run build
-			echo -e "GULP installed ... ${GREEN}done${RESET}"
+	# 		# RUN THE GULP
+	# 		echo "GULP is installing..."
+	# 		docker-compose run --no-deps --rm gulp npm run build
+	# 		echo -e "GULP installed ... ${GREEN}done${RESET}"
 
 
-		fi
+	# 	fi
 
 
 
-	fi
+	# fi
 
 }
