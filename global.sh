@@ -208,9 +208,9 @@ function db_url_update () {
 
 
 	echo -e "Checking registered domain name..."
-	#OLD_DOMAIN="$(wp option get siteurl)" # DAMMIT BUG!
-	wp option get siteurl
-	read -ep "Write the URL above: " OLD_DOMAIN
+	OLD_DOMAIN="$(wp option get siteurl)"
+	#wp option get siteurl
+	#read -ep "Write the URL above: " OLD_DOMAIN
 	echo "Registered domain name: ${OLD_DOMAIN}"
 
 
