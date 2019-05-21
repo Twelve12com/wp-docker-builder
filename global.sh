@@ -338,15 +338,6 @@ function update_temporary_files () {
 
 	fi
 
-	# Old version
-	if [[ -d "${BASEDIR}/site/tmp_wp-content" ]]; then
-		
-		# Delete the old wp-content folder
-		rm -rf "${BASEDIR}/site/wp-content"
-		mv "${BASEDIR}/site/tmp_wp-content" "${BASEDIR}/site/wp-content"
-
-	fi
-
 	echo -e "Temporary files update ... ${GREEN}done${RESET}"
 
 
@@ -354,47 +345,5 @@ function update_temporary_files () {
 	# Update the permissions
 	permission_update "${BASEDIR}/site/"
 
-
-
-	# Update old version remote files
-	if [[ -d "${BASEDIR}/site/wp-content" ]]; then
-
-		echo -e "Old version detected..."
-
-
-		# Remove the old wp-content
-		rm -rf "${BASEDIR}/site/wp/wp-content"
-
-
-		# Move our wp-content folder
-		mv "${BASEDIR}/site/wp-content" "${BASEDIR}/site/wp/wp-content"
-
-
-		echo -e "Old version updated ... ${GREEN}done${RESET}"
-
-	fi
-
-
-
-	# # Build the GULP
-	# if [[ -f "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/package.json" ]]; then
-
-
-
-	# 	# If Gulp not installed, build the gulp
-	# 	if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules" ]] || [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/gulp" ]]; then
-
-
-	# 		# RUN THE GULP
-	# 		echo "GULP is installing..."
-	# 		docker-compose run --no-deps --rm gulp npm run build
-	# 		echo -e "GULP installed ... ${GREEN}done${RESET}"
-
-
-	# 	fi
-
-
-
-	# fi
 
 }

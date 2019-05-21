@@ -126,13 +126,6 @@ if [[ $MODE == install-remote ]]; then
 
 	fi
 
-	# Old version
-	if [[ -d site/wp-content ]]; then
-
-		mv site/wp-content site/tmp_wp-content
-
-	fi
-
 
 	# Update the permissions
 	permission_update site/
