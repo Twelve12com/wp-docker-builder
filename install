@@ -314,6 +314,16 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	fi
 
 
+	# Move the wp-content folder TEMPORARILY
+	if [[ -d "${BASEDIR}/site/wp/wp-content/" ]]; then
+
+		rm -rf "${BASEDIR}/site/wp/tmp_wp-content/"
+		mv "${BASEDIR}/site/wp/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
+		echo -e "'wp-content' folder moved in place temporarily ... ${GREEN}done${RESET}"
+
+	fi
+
+
 	# Create the .env file from the template (local.env)
 	rm -f .env
 	cp local.env .env
@@ -476,18 +486,11 @@ fi
 
 
 
-# Update the temporary files
-if [[ $MODE == install-remote ]] || [[ $MODE == import-existing-site ]]; then
-
-	update_temporary_files
-
-fi
-
-
-
-
-# Check the old site URL when importing
 if [[ $MODE == install-remote ]] || [[ $MODE == install-existing-site ]] || [[ $MODE == import-existing-site ]]; then
+
+
+	# Update the temporary files
+	update_temporary_files
 
 
 	# Ask the registered URL and do the replacements
