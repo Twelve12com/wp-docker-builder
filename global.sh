@@ -267,6 +267,12 @@ function move_import_files () {
 
 	fi
 
+	if [[ ! -d "${BASEDIR}/site/wp/wp-content/" ]]; then
+
+		mkdir -p "${BASEDIR}/site/wp/wp-content/"
+
+	fi
+
 
 	# Move the SQL file
 	if [[ -f "${BASEDIR}/site/import/db.sql" ]]; then
