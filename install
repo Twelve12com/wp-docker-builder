@@ -286,6 +286,10 @@ read -ep "Are these correct? (type 'yes' to confirm): " confirm
 if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 
+	# Move the 'wp-content' folder TEMPORARILY
+	make_temporary
+
+
 	# Update the project folder name
 	if [[ -d ../wp-docker-builder/ ]]; then
 
@@ -297,10 +301,6 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 		BASEDIR="$(pwd)"
 
 	fi
-
-
-	# Move the 'wp-content' folder TEMPORARILY
-	make_temporary
 
 
 	# Create the .env file from the template (local.env)

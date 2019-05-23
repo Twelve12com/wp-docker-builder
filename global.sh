@@ -314,6 +314,11 @@ function move_import_files () {
 		rm -rf "${BASEDIR}/site/import/"
 		echo -e "'import' folder removed ... ${GREEN}done${RESET}"
 
+
+	else
+
+		echo -e "${RED}IMPORT ERROR${RESET}"
+
 	fi
 
 
