@@ -296,6 +296,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 		# Rename
 		mv ../wp-docker-builder/ ../$SLUG
 		cd ../$SLUG
+		echo -e "Project folder renamed as '${SLUG}' ... ${GREEN}done${RESET}"
 
 		# Update the basedir
 		BASEDIR="$(pwd)"
