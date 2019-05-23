@@ -318,6 +318,7 @@ function move_import_files () {
 	else
 
 		echo -e "${RED}IMPORT ERROR${RESET}"
+		exit
 
 	fi
 
