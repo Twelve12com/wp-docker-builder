@@ -33,6 +33,11 @@ move_import_files
 
 
 
+# Move the 'wp-content' folder TEMPORARILY
+make_temporary
+
+
+
 echo "Closing server..."
 docker-compose down
 echo -e "Server is down ... ${GREEN}done${RESET}"
@@ -56,8 +61,8 @@ wait_for_mysql
 
 
 
-# Update temporary files
-update_temporary_files
+# Make the 'wp-content' folder permanent
+make_permanent
 
 
 

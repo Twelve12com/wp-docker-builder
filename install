@@ -119,14 +119,6 @@ if [[ $MODE == install-remote ]]; then
 	echo -e "Git clone ... ${GREEN}done${RESET}"
 
 
-	# Make the wp-content folder temporary
-	if [[ -d site/wp/wp-content ]]; then
-
-		mv site/wp/wp-content site/wp/tmp_wp-content
-
-	fi
-
-
 	# Update the permissions
 	permission_update site/
 
@@ -307,14 +299,8 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	fi
 
 
-	# Move the wp-content folder TEMPORARILY
-	if [[ -d "${BASEDIR}/site/wp/wp-content/" ]]; then
-
-		rm -rf "${BASEDIR}/site/wp/tmp_wp-content/"
-		mv "${BASEDIR}/site/wp/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
-		echo -e "'wp-content' folder moved in place temporarily ... ${GREEN}done${RESET}"
-
-	fi
+	# Move the 'wp-content' folder TEMPORARILY
+	make_temporary
 
 
 	# Create the .env file from the template (local.env)
@@ -479,18 +465,14 @@ fi
 
 
 
-if [[ $MODE == install-remote ]] || [[ $MODE == install-existing-site ]] || [[ $MODE == import-existing-site ]]; then
+
+# Update the temporary files
+make_permanent
 
 
-	# Update the temporary files
-	update_temporary_files
 
-
-	# Ask the registered URL and do the replacements
-	db_url_update
-
-
-fi
+# Ask the registered URL and do the replacements
+db_url_update
 
 
 

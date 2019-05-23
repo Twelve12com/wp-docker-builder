@@ -267,12 +267,6 @@ function move_import_files () {
 
 	fi
 
-	if [[ ! -d "${BASEDIR}/site/wp/wp-content/" ]]; then
-
-		mkdir -p "${BASEDIR}/site/wp/wp-content/"
-
-	fi
-
 
 	# Move the SQL file
 	if [[ -f "${BASEDIR}/site/import/db.sql" ]]; then
@@ -295,7 +289,7 @@ function move_import_files () {
 	fi
 
 
-	# Remove existing DB files if exists
+	# Remove existing MySQL files if exists
 	if [[ -d "${BASEDIR}/site/database/mysql/" ]]; then
 	
 		rm -rf "${BASEDIR}/site/database/mysql/"
@@ -303,12 +297,13 @@ function move_import_files () {
 	fi
 
 
-	# Move the wp-content folder TEMPORARILY
+	# Move the wp-content folder
 	if [[ -d "${BASEDIR}/site/import/wp-content/" ]]; then
 
 		rm -rf "${BASEDIR}/site/wp/tmp_wp-content/"
-		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
-		echo -e "'wp-content' folder moved in place temporarily ... ${GREEN}done${RESET}"
+		rm -rf "${BASEDIR}/site/wp/wp-content/"
+		mv "${BASEDIR}/site/import/wp-content" "${BASEDIR}/site/wp/wp-content"
+		echo -e "'wp-content' folder moved in place ... ${GREEN}done${RESET}"
 
 	fi
 
@@ -324,10 +319,29 @@ function move_import_files () {
 
 }
 
-function update_temporary_files () {
+function make_temporary () {
 
 
-	echo -e "Updating the temporary files..."
+	echo -e "'wp-content' folder is being temporary..."
+
+	# Make the wp-content folder temporary
+	if [[ -d "${BASEDIR}/site/wp/wp-content" ]]; then
+		
+		# Delete the old tmp_wp-content folder if exists
+		rm -rf "${BASEDIR}/site/wp/tmp_wp-content"
+		mv "${BASEDIR}/site/wp/wp-content" "${BASEDIR}/site/wp/tmp_wp-content"
+
+		echo -e "'wp-content' folder has been made temporary ... ${GREEN}done${RESET}"
+
+	fi
+
+
+}
+
+function make_permanent () {
+
+
+	echo -e "'wp-content' folder is being permenant..."
 
 	# Make the wp-content folder temporary
 	if [[ -d "${BASEDIR}/site/wp/tmp_wp-content" ]]; then
@@ -336,10 +350,9 @@ function update_temporary_files () {
 		rm -rf "${BASEDIR}/site/wp/wp-content"
 		mv "${BASEDIR}/site/wp/tmp_wp-content" "${BASEDIR}/site/wp/wp-content"
 
+		echo -e "'wp-content' folder has been made permenant ... ${GREEN}done${RESET}"
+
 	fi
-
-	echo -e "Temporary files update ... ${GREEN}done${RESET}"
-
 
 
 	# Update the permissions
