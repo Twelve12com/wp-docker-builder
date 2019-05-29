@@ -344,6 +344,7 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 else
 
 	# If not confirmed, close the installation
+	echo -e "${BLUE}NOT CONFIRMED${RESET}"
 	exit
 
 fi
@@ -473,7 +474,11 @@ make_permanent
 
 
 # Ask the registered URL and do the replacements
-db_url_update
+if [[ $MODE != install-starter ]]; then
+	
+	db_url_update
+
+fi
 
 
 
