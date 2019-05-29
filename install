@@ -565,8 +565,17 @@ fi
 
 
 
-# Fix the permissions finally
-git_permission_update site/.git
+# Fix the site git permissions
+if [[ -d site/.git ]]; then
+	
+	git_permission_update site/.git
+
+fi
+
+
+
+
+# Fix the builder git permissions finally
 git_permission_update .git
 
 
