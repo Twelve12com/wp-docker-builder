@@ -71,4 +71,16 @@ db_url_update
 
 
 
-echo -e "IMPORTING ${GREEN}COMPLETE${RESET}"
+# PRINT THE SITE INFO
+echo -e "${GREEN}IMPORTING COMPLETE${RESET}"
+echo ""
+echo ""
+echo "== Site Info ===================="
+echo ""
+echo "Site URL: http://${DOMAIN}"
+echo "Admin Page: http://${DOMAIN}/wp-admin"
+echo "IP: ${IP}"
+echo ""
+echo "================================="
+echo ""
+echo ""
