@@ -287,7 +287,11 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 
 
 	# Move the 'wp-content' folder TEMPORARILY
-	make_temporary
+	if [[ $MODE != install-starter ]]; then
+
+		make_temporary
+
+	fi
 
 
 	# Update the project folder name
@@ -480,7 +484,11 @@ fi
 
 
 # Update the temporary files
-make_permanent
+if [[ $MODE != install-starter ]]; then
+
+	make_permanent
+
+fi
 
 
 
