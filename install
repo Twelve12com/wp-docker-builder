@@ -157,7 +157,15 @@ if [[ ! -f .env ]]; then
 
 
 	# Confirm the local domain name
-	read -ep "Domain Name (${DOMAIN}): " domain
+	if [[ $MODE != install-remote ]]; then
+		
+		read -ep "Domain Name (${DOMAIN}): " domain
+
+	else
+
+		domain=""
+
+	fi
 	[[ ! -z "$domain" ]] && DOMAIN=$domain || echo "Using '${DOMAIN}'"
 
 
