@@ -157,7 +157,7 @@ if [[ ! -f .env ]]; then
 
 
 	# Confirm the local domain name
-	if [[ $MODE != install-remote ]]; then
+	if [[ $MODE != install-remote ]] && [[ $MODE != import-existing-site ]]; then
 		
 		read -ep "Domain Name (${DOMAIN}): " domain
 
