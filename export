@@ -72,9 +72,9 @@ if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
 
 
 	# Delete 'node_modules' folder if exists
-	if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/" ]]; then
+	if [[ -d "${BASEDIR}/site/export/${SLUG}/node_modules/" ]]; then
 
-		rm -rf "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/"
+		rm -rf "${BASEDIR}/site/export/${SLUG}/node_modules/"
 
 	fi
 

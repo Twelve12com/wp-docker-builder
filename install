@@ -183,11 +183,7 @@ if [[ ! -f .env ]]; then
 	# When installing starter or importing an existing site
 	if [[ $MODE == install-starter ]] || [[ $MODE == import-existing-site ]]; then
 
-		if [[ $MODE == import-existing-site ]]; then
-			read -ep "Active theme folder name (${SLUG}): " slug
-		else
-			read -ep "Project Name (${SLUG}): " slug
-		fi
+		read -ep "Project Name (${SLUG}): " slug
 		[[ ! -z "$slug" ]] && SLUG=$slug || echo "Using '${SLUG}'"
 
 
