@@ -5,7 +5,11 @@ source global.sh
 
 
 # Get data from .env file
-source .env
+if [[ -f .env ]]; then
+
+	source .env
+
+fi
 
 
 
