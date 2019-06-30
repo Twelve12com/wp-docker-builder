@@ -42,20 +42,44 @@ DB_SUM1=$(md5 -r $DB_FILE)
 
 # DETECT DB CHANGES
 DB_SUM2=$(md5 -r $DB_FILE)
-if [[ $DB_SUM1 != $DB_SUM2 ]] && [[ $IP != 127.0.0.1 ]]; then
+if [[ $DB_SUM1 != $DB_SUM2 ]]; then
 
 
 	echo "DB changed."
 
 
-	echo "Closing server..."
-	docker-compose down
-	echo -e "Server is down ... ${GREEN}done${RESET}"
+	# If installed
+	if [[ $IP != 127.0.0.1 ]] && [[ -f .env ]]; then
+
+		echo "Closing server..."
+		docker-compose down
+		echo -e "Server is down ... ${GREEN}done${RESET}"
+
+	else
+
+		echo -e "${GREEN}Server needs to be restarted to apply DB changes.${RESET}"
+
+	fi
 
 
 	echo "Old data removing..."
 	rm -rf site/database/mysql/
 	echo -e "Remove old data ... ${GREEN}done${RESET}"
+
+
+else
+
+
+	echo "DB is identical."
+
+
+fi
+
+
+
+
+# If installed
+if [[ $IP != 127.0.0.1 ]] && [[ -f .env ]]; then
 
 
 	echo "Site is building again..."
@@ -71,26 +95,10 @@ if [[ $DB_SUM1 != $DB_SUM2 ]] && [[ $IP != 127.0.0.1 ]]; then
 	db_url_update
 
 
-else
-
-
-	echo "DB is identical."
-
-
-	# Start the docker containers
-	echo "Starting the server..."
-	docker-compose up -d
-
-
-	# Check MySQL to be ready
-	wait_for_mysql
-
-	
 	echo -e "Server is ${GREEN}up${RESET}"
 
 
 fi
-
 
 
 
