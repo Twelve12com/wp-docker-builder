@@ -28,40 +28,5 @@ self_update
 
 
 
-# Open that IP slot
-ifconfig lo0 alias $IP up
-echo -e "'${IP}' is now available ... ${GREEN}done${RESET}"
-
-
-
-
 # Do the hard pull
-sudo bash pull --hard
-
-
-
-
-# Server permission update
-# bash permission-fix
-
-
-
-
-# PRINT THE SITE INFO
-echo -e "${GREEN}Site is up!${RESET}"
-echo ""
-echo ""
-echo "== Site Info ===================="
-echo ""
-echo "Admin Page: http://${DOMAIN}"
-echo "IP: ${IP}"
-echo ""
-echo "================================="
-echo ""
-echo ""
-
-
-
-
-# Install NPM for Gulp
-install_npm
+sudo bash start --hard
