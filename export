@@ -102,4 +102,4 @@ db_backup
 
 
 
-echo -e "EXPORTING ${GREEN}COMPLETE${RESET}"
+echo -e "${GREEN}EXPORTING COMPLETE${RESET}"

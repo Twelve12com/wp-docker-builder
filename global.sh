@@ -371,3 +371,43 @@ function make_permanent () {
 
 
 }
+
+function install_npm () {
+
+
+	# If package.json exist in theme folder
+	if [[ -f "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/package.json" ]]; then
+
+
+
+		# If Gulp not installed, build the gulp
+		if [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules" ]] || [[ ! -d "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/node_modules/gulp" ]]; then
+
+
+			# RUN THE GULP
+			echo "NPM packages are installing..."
+			docker-compose run --no-deps --rm gulp npm run build
+			echo -e "NPM packages installed ... ${GREEN}done${RESET}"
+
+
+		fi
+
+
+
+		# If Gulp file exist in theme folder
+		if [[ -f "${BASEDIR}/site/wp/wp-content/themes/${SLUG}/gulpfile.js" ]]; then
+
+
+			# RUN THE GULP
+			echo "GULP is running..."
+			docker-compose run --no-deps --rm gulp npm start
+
+
+		fi
+
+
+
+	fi
+
+
+}

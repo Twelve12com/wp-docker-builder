@@ -94,4 +94,4 @@ fi
 
 
 
-echo -e "PULLING ${GREEN}COMPLETE${RESET}"
+echo -e "${GREEN}PULLING COMPLETE${RESET}"
