@@ -17,8 +17,12 @@ self_update
 
 
 # Confirmation
-read -ep "Are you sure you want to get latest changes from Git? This will replace all the changes you might have done. (yes | no): " ACTION
-[[ $ACTION != yes ]] && exit || sleep 0
+if [[ $1 == --hard ]]; then
+	
+	read -ep "Are you sure you want to get latest changes from Git? This will replace all the changes you might have done. (yes | no): " ACTION
+	[[ $ACTION != yes ]] && exit || sleep 0
+
+fi
 
 
 
@@ -33,9 +37,11 @@ DB_SUM1=$(md5 -r $DB_FILE)
 	cd site/
 	echo "Checking the latest remote changes..."
 	git pull
-	git reset --hard
-	git clean -df wp/wp-content/
-	git pull
+	if [[ $1 == --hard ]]; then
+		git reset --hard
+		git clean -df wp/wp-content/
+		git pull
+	fi
 	echo -e "Git pull complete ... ${GREEN}done${RESET}"
 )
 

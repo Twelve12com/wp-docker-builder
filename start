@@ -35,72 +35,8 @@ echo -e "'${IP}' is now available ... ${GREEN}done${RESET}"
 
 
 
-# DETECT DB CHANGES
-DB_FILE=site/database/dump/wordpress_data.sql
-DB_SUM1=$(md5 -r $DB_FILE)
-
-
-# Pulling latest changes from git
-(
-	cd site/
-	echo "Checking the latest remote changes..."
-	git pull
-	echo -e "Git pull complete ... ${GREEN}done${RESET}"
-)
-
-
-
-# DETECT DB CHANGES
-DB_SUM2=$(md5 -r $DB_FILE)
-if [[ $DB_SUM1 != $DB_SUM2 ]]; then
-
-
-	echo "DB changed."
-
-
-	echo "Closing server..."
-	docker-compose down
-	echo -e "Server is down ... ${GREEN}done${RESET}"
-
-
-	echo "Old data removing..."
-	rm -rf site/database/mysql/
-	echo -e "Remove old data ... ${GREEN}done${RESET}"
-
-
-	echo "Site is building again..."
-	docker-compose up -d
-	echo -e "Build server again ... ${GREEN}done${RESET}"
-
-
-	# Check MySQL to be ready
-	wait_for_mysql
-
-
-
-	# Ask the registered URL and do the replacements
-	db_url_update
-
-
-else
-
-
-	echo "DB is identical."
-
-
-	# Start the docker containers
-	echo "Starting the server..."
-	docker-compose up -d
-
-
-	# Check MySQL to be ready
-	wait_for_mysql
-
-	
-	echo -e "Server is ${GREEN}up${RESET}"
-
-
-fi
+# Pull the changes
+sudo bash pull
 
 
 
