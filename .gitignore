@@ -3,6 +3,7 @@ site/*
 !site/start
 !site/hardstart
 !site/push
+!site/pull
 !site/restart
 !site/stop
 !site/permission-fix
