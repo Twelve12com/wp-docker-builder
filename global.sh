@@ -133,6 +133,17 @@ function wp {
 
 function db_backup () {
 
+	# Checking the WP version
+	echo "Checking the WP version..."
+	WP_VERSION="$(wp core version)"
+
+	sedreplace "s/WP_VERSION=latest/WP_VERSION=$SLUG/g" "${BASEDIR}/.env";
+	rm -f "${BASEDIR}/site/.env"
+	cp "${BASEDIR}/.env" "${BASEDIR}/site/.env"
+	
+	echo -e "WP version '${WP_VERSION}' is registered ... ${GREEN}done${RESET}"
+
+
 	# Save the DB backup
 	echo "Backing up the DB..."
 	DB_FILE="${BASEDIR}/site/database/dump/wordpress_data.sql"

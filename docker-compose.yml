@@ -2,7 +2,7 @@ version: '3'
 
 services:
   wp:
-    image: wordpress:latest
+    image: wordpress:${WP_VERSION}
     container_name: "${PREFIX}_wp"
     restart: "always"
     user: root
