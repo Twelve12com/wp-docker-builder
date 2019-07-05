@@ -131,15 +131,10 @@ function wp {
 	command docker-compose run --no-deps --rm wpcli --allow-root "$@"
 }
 
-function db_backup () {
-
-	# Checking the WP version
-	echo "Checking the WP version..."
-	WP_VERSION="$(wp core version)"
-	WP_VERSION=${WP_VERSION%?}
-	echo -e "WP version found: ${GREEN}${WP_VERSION}${RESET}"
+function update_environment {
 
 
+	echo "Start updating environment files..."
 
 	# Create the .env file from the template (local.env)
 	rm -f "${BASEDIR}/.env"
@@ -156,25 +151,50 @@ function db_backup () {
 	sedreplace "s/Site tagline/$DESC/g" "${BASEDIR}/.env";
 	sedreplace "s/PREFIX=sitename/PREFIX=$PREFIX/g" "${BASEDIR}/.env";
 	sedreplace "s/$DEFAULT_PLUGINS/$PLUGINS/g" "${BASEDIR}/.env";
+	sedreplace "s/DEFAULT_PLUGINS/PLUGINS/g" "${BASEDIR}/.env";
 
 	sedreplace "s/DEVELOPER_USERNAME=Username/DEVELOPER_USERNAME=$DEVELOPER_USERNAME/g" "${BASEDIR}/.env";
 	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" "${BASEDIR}/.env";
 	sedreplace "s/DEVELOPER_LAST_NAME=Lastname/DEVELOPER_LAST_NAME=$DEVELOPER_LAST_NAME/g" "${BASEDIR}/.env";
 	sedreplace "s#DEVELOPER_EMAIL=name@company.com#DEVELOPER_EMAIL=$DEVELOPER_EMAIL#g" "${BASEDIR}/.env";
 	sedreplace "s#DEVELOPER_URL=www.company.com#DEVELOPER_URL=$DEVELOPER_URL#g" "${BASEDIR}/.env";
+
 	echo -e ".env file updated with the new info ... ${GREEN}done${RESET}"
 
 
-	# Save the new .env file to the site folder
+	# Save the new site/.env file
 	rm -f "${BASEDIR}/site/.env"
 	cp "${BASEDIR}/.env" "${BASEDIR}/site/.env"
 	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
 
-	sedreplace "s/IP=127.0.0.1/IP=${IP}/g" "${BASEDIR}/.env";
+
+}
+
+function db_backup () {
 
 
+	# Register the IP before overwrite
+	REAL_IP=$IP
 
 
+	# Get data
+	source "${BASEDIR}/local.env"
+	source "${BASEDIR}/site/.env"
+
+
+	# Checking the WP version
+	echo "Checking the WP version..."
+	WP_VERSION="$(wp core version)"
+	WP_VERSION=${WP_VERSION%?}
+	echo -e "WP version found: ${GREEN}${WP_VERSION}${RESET}"
+
+
+	# Update environment files
+	update_environment
+
+
+	# Update the current local IP
+	sedreplace "s/IP=127.0.0.1/IP=${REAL_IP}/g" "${BASEDIR}/.env";
 	
 
 
