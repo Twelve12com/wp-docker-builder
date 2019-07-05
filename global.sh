@@ -136,6 +136,7 @@ function db_backup () {
 	# Checking the WP version
 	echo "Checking the WP version..."
 	WP_VERSION="$(wp core version)"
+	WP_VERSION=${WP_VERSION%?}
 
 	sedreplace "s/WP_VERSION=latest/WP_VERSION=$SLUG/g" "${BASEDIR}/.env";
 	rm -f "${BASEDIR}/site/.env"
