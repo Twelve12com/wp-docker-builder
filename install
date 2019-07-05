@@ -473,16 +473,18 @@ fi
 
 
 
+# Save the initial DB backup
+db_backup
+
+
+
+
 # Ask for the git initialization
 if [[ ! -d site/.git ]]; then
 
 
 	read -ep "Would you like to create new this project to Git? (Press 'enter' or type 'no'): " gitconfirm
 	if [[ $gitconfirm != no ]]; then
-
-
-		# Save the initial DB backup
-		db_backup
 
 
 		# Initiate git
