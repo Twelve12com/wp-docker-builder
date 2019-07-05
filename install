@@ -256,6 +256,7 @@ echo "Local development domain: $DOMAIN"
 echo ""
 echo "Project Name: $SLUG"
 echo "Short Name: $PREFIX"
+echo "WP Version: $WP_VERSION"
 
 if [[ $MODE == install-starter ]]; then
 	echo "Website Name: $NAME"
