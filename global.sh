@@ -160,7 +160,7 @@ function db_backup () {
 	sedreplace "s/$DEFAULT_PLUGINS/$PLUGINS/g" "${BASEDIR}/.env";
 
 	sedreplace "s/DEVELOPER_USERNAME=Username/DEVELOPER_USERNAME=$DEVELOPER_USERNAME/g" "${BASEDIR}/.env";
-	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" .env;
+	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" "${BASEDIR}/.env";
 	sedreplace "s/DEVELOPER_LAST_NAME=Lastname/DEVELOPER_LAST_NAME=$DEVELOPER_LAST_NAME/g" "${BASEDIR}/.env";
 	sedreplace "s#DEVELOPER_EMAIL=name@company.com#DEVELOPER_EMAIL=$DEVELOPER_EMAIL#g" "${BASEDIR}/.env";
 	sedreplace "s#DEVELOPER_URL=www.company.com#DEVELOPER_URL=$DEVELOPER_URL#g" "${BASEDIR}/.env";
