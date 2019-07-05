@@ -66,6 +66,14 @@ echo "Operating System: ${OS}"
 
 
 
+# Fix the missing WP_VERSION variable
+if [[ -f "${BASEDIR}/.env" ]]; then
+
+	if [ -z $(grep "WP_VERSION" "${BASEDIR}/.env") ]; then 
+		echo "NOT FOUND"
+	fi
+
+fi
 
 
 
