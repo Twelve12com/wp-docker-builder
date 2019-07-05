@@ -70,7 +70,9 @@ echo "Operating System: ${OS}"
 if [[ -f "${BASEDIR}/.env" ]]; then
 
 	if [ -z $(grep "WP_VERSION" "${BASEDIR}/.env") ]; then 
-		echo "NOT FOUND"
+		echo "WP version not found."
+		echo "WP_VERSION=latest" >> "${BASEDIR}/.env"
+		echo "WP version added ... ${GREEN}done${RESET}"
 	fi
 
 fi
