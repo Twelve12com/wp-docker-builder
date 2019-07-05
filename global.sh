@@ -165,8 +165,6 @@ function db_backup () {
 	sedreplace "s#DEVELOPER_EMAIL=name@company.com#DEVELOPER_EMAIL=$DEVELOPER_EMAIL#g" "${BASEDIR}/.env";
 	sedreplace "s#DEVELOPER_URL=www.company.com#DEVELOPER_URL=$DEVELOPER_URL#g" "${BASEDIR}/.env";
 
-	sedreplace "s/IP=127.0.0.1/IP=${IP}/g" "${BASEDIR}/.env";
-
 
 	echo -e ".env file updated with the new info ... ${GREEN}done${RESET}"
 
@@ -175,6 +173,12 @@ function db_backup () {
 	rm -f "${BASEDIR}/site/.env"
 	cp "${BASEDIR}/.env" "${BASEDIR}/site/.env"
 	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
+
+
+
+
+
+	sedreplace "s/IP=127.0.0.1/IP=${IP}/g" "${BASEDIR}/.env";
 
 
 
