@@ -23,6 +23,11 @@ source .env
 
 
 
+# Save a DB backup
+db_backup
+
+
+
 # Delete the server
 echo "Server is closing..."
 docker-compose down

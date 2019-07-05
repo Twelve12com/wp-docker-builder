@@ -71,6 +71,11 @@ make_permanent
 
 
 
+# Save a DB backup
+db_backup
+
+
+
 # PRINT THE SITE INFO
 echo -e "${GREEN}IMPORTING COMPLETE${RESET}"
 echo ""
