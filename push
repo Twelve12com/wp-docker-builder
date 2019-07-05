@@ -21,6 +21,10 @@ source .env
 	db_backup
 
 
+	# Early exit if only db backup requested
+	[[ $1 == --db ]] && exit || sleep 0
+
+
 	# Get the current WP version and add it to the .env files !!!
 
 
