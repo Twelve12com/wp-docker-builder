@@ -138,9 +138,51 @@ function db_backup () {
 	WP_VERSION="$(wp core version)"
 	WP_VERSION=${WP_VERSION%?}
 
-	sedreplace "s/WP_VERSION=latest/WP_VERSION=$SLUG/g" "${BASEDIR}/.env";
-	rm -f "${BASEDIR}/site/.env"
-	cp "${BASEDIR}/.env" "${BASEDIR}/site/.env"
+
+
+
+
+
+	# Create the .env file from the template (local.env)
+	rm -f .env
+	cp local.env .env
+	echo -e ".env file created ... ${GREEN}done${RESET}"
+
+
+	# Update the .env file
+	sedreplace "s/DOMAIN=dev.sitename.com/DOMAIN=$DOMAIN/g" .env;
+	sedreplace "s/WP_VERSION=latest/WP_VERSION=$WP_VERSION/g" "${BASEDIR}/.env";
+
+	sedreplace "s/SLUG=site-name/SLUG=$SLUG/g" .env;
+	sedreplace "s/Site Name/$NAME/g" .env;
+	sedreplace "s/Site tagline/$DESC/g" .env;
+	sedreplace "s/PREFIX=sitename/PREFIX=$PREFIX/g" .env;
+	sedreplace "s/$DEFAULT_PLUGINS/$PLUGINS/g" .env;
+
+	sedreplace "s/DEVELOPER_USERNAME=Username/DEVELOPER_USERNAME=$DEVELOPER_USERNAME/g" .env;
+	sedreplace "s/DEVELOPER_NAME=Name/DEVELOPER_NAME=$DEVELOPER_NAME/g" .env;
+	sedreplace "s/DEVELOPER_LAST_NAME=Lastname/DEVELOPER_LAST_NAME=$DEVELOPER_LAST_NAME/g" .env;
+	sedreplace "s#DEVELOPER_EMAIL=name@company.com#DEVELOPER_EMAIL=$DEVELOPER_EMAIL#g" .env;
+	sedreplace "s#DEVELOPER_URL=www.company.com#DEVELOPER_URL=$DEVELOPER_URL#g" .env;
+
+	sedreplace "s/IP=127.0.0.1/IP=${IP}/g" .env;
+
+
+	echo -e ".env file updated with the new info ... ${GREEN}done${RESET}"
+
+
+	# Save the new .env file to the site folder
+	rm -f site/.env
+	cp .env site/.env
+	echo -e ".env file copied to the 'site/' folder ... ${GREEN}done${RESET}"
+
+
+
+
+
+
+
+
 	
 	echo -e "WP version '${WP_VERSION}' is registered ... ${GREEN}done${RESET}"
 
