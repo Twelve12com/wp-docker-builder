@@ -96,8 +96,16 @@ echo ""
 if [[ $MODE == install-remote ]]; then
 
 
-	read -ep "Remote project name (site-name): " GIT
-	[[ ! -z "$GIT" ]] && sleep 0 || (echo "Empty name" && exit)
+	if [[ ! -z $2 ]]; then
+
+		GIT=$2
+
+	else
+
+		read -ep "Remote project name (site-name): " GIT
+		[[ ! -z "$GIT" ]] && sleep 0 || (echo "Empty name" && exit)
+
+	fi
 
 
 	# Test the git URL
