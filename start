@@ -4,12 +4,17 @@ source global.sh
 
 
 
+# Builder updates
+self_update
+
+
+
+
 # Install if not already
 if [[ $IP == 127.0.0.1 ]] || [[ ! -f .env ]]; then
 
 	echo "Redirecting to installation..."
 	bash install
-	exit
 
 fi
 
@@ -18,12 +23,6 @@ fi
 
 # Get data from .env file
 source .env
-
-
-
-
-# Builder updates
-self_update
 
 
 

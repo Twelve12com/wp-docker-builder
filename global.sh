@@ -285,7 +285,7 @@ function db_url_update () {
 	echo -e "Checking registered domain name..."
 	OLD_DOMAIN="$(wp option get siteurl)"
 	OLD_DOMAIN=${OLD_DOMAIN%?}
-	echo "Registered domain name: ${OLD_DOMAIN}"
+	echo -e "Registered domain name: ${GREEN}${OLD_DOMAIN}${RESET}"
 
 
 	# URL replacements
@@ -293,6 +293,10 @@ function db_url_update () {
 
 		# Do the replacements
 		search_replace "${OLD_DOMAIN}" "${DOMAIN}"
+
+	else
+
+		echo "No need to do DB replacements."
 
 	fi
 
