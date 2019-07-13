@@ -214,8 +214,17 @@ if [[ ! -f .env ]]; then
 		[[ ! -z "$desc" ]] && DESC=$desc || echo "Using '${DESC}'"
 
 
-		read -ep "Plugins that need to be installed (${PLUGINS}): " plugins
-		[[ ! -z "$plugins" ]] && PLUGINS=$plugins || echo "Using '${PLUGINS}'"
+		read -ep "Plugins that need to be installed (${DEFAULT_PLUGINS}): " plugins
+		if [[ ! -z "$plugins" ]]; then
+
+			PLUGINS=$plugins
+
+		else
+
+			echo "Using '${DEFAULT_PLUGINS}'"
+			PLUGINS=$DEFAULT_PLUGINS
+
+		fi
 
 
 		# Ask for the admin info
