@@ -185,6 +185,7 @@ function db_backup () {
 
 	# Register the IP before overwrite
 	REAL_IP=$IP
+	echo "Real IP: ${REAL_IP}"
 
 
 	# Get data
