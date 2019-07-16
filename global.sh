@@ -193,6 +193,11 @@ function db_backup () {
 	source "${BASEDIR}/site/.env"
 
 
+	# Re-assign the real IP
+	IP=$REAL_IP
+	echo "IP: ${IP}"
+
+
 	# Checking the WP version
 	echo "Checking the WP version..."
 	WP_VERSION="$(wp core version)"
