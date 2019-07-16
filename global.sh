@@ -185,7 +185,6 @@ function db_backup () {
 
 	# Register the IP before overwrite
 	REAL_IP=$IP
-	echo "Real IP: ${REAL_IP}"
 
 
 	# Get data
@@ -195,7 +194,6 @@ function db_backup () {
 
 	# Re-assign the real IP
 	IP=$REAL_IP
-	echo "IP: ${IP}"
 
 
 	# Checking the WP version
@@ -209,9 +207,8 @@ function db_backup () {
 	update_environment
 
 
-	# Update the current local IP
+	# Update the current local IP on builder
 	sedreplace "s/IP=127.0.0.1/IP=${REAL_IP}/g" "${BASEDIR}/.env";
-	
 
 
 	# Save the DB backup

@@ -471,10 +471,6 @@ if [[ $MODE == install-starter ]]; then
 	source wp.sh
 
 
-	# Save the initial DB backup
-	db_backup
-
-
 fi
 
 
