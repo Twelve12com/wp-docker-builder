@@ -334,6 +334,10 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	source .env
 
 
+	# Update the permissions
+	permission_update ./
+
+
 else
 
 	# If not confirmed, close the installation
@@ -470,12 +474,6 @@ if [[ $MODE != install-starter ]]; then
 	make_permanent
 
 fi
-
-
-
-
-# Update the permissions
-permission_update ./
 
 
 
