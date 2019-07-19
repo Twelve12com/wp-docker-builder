@@ -127,10 +127,6 @@ if [[ $MODE == install-remote ]]; then
 	echo -e "Git clone ... ${GREEN}done${RESET}"
 
 
-	# Update the permissions
-	permission_update site/
-
-
 fi
 
 
@@ -338,10 +334,6 @@ if [[ $confirm == yes ]] || [[ $confirm == y ]]; then
 	source .env
 
 
-	# Permission fix of the project
-	permission_update ./
-
-
 else
 
 	# If not confirmed, close the installation
@@ -444,10 +436,6 @@ if [[ $MODE == install-starter ]]; then
 	echo -e "Starter theme clonned ... ${GREEN}done${RESET}"
 
 
-	# Update the permissions
-	permission_update site/wp/wp-content/themes/${SLUG}/
-
-
 	# Theme function prefix changes
 	sedreplace "s/sitename/${PREFIX}/g" site/wp/wp-content/themes/${SLUG}/functions.php;
 	sedreplace "s/sitename/${PREFIX}/g" site/wp/wp-content/themes/${SLUG}/header.php;
@@ -482,6 +470,12 @@ if [[ $MODE != install-starter ]]; then
 	make_permanent
 
 fi
+
+
+
+
+# Update the permissions
+permission_update ./
 
 
 

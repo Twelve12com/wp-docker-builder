@@ -448,10 +448,6 @@ function make_permanent () {
 	fi
 
 
-	# Update the permissions
-	permission_update "${BASEDIR}/site/"
-
-
 }
 
 function install_npm () {

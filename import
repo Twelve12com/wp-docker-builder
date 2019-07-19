@@ -71,6 +71,11 @@ make_permanent
 
 
 
+# Update the permissions
+permission_update "${BASEDIR}/site/"
+
+
+
 # Save a DB backup
 db_backup
 
