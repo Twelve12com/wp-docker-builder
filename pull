@@ -42,6 +42,7 @@ DB_SUM1=$(md5 -r $DB_FILE)
 	echo "Checking the latest remote changes..."
 	git pull
 	if [[ $1 == --hard ]]; then
+		echo "Hard reset..."
 		git fetch
 		git reset --hard origin/master
 		git clean -df wp/
