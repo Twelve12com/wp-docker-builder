@@ -3,11 +3,11 @@ source global.sh
 
 
 # Do all by default
-ACTION=all
+ACTION=site
 
 
 # Specific actions
-if [[ $1 == git ]] || [[ $1 == server ]] || [[ $1 == permission ]]; then
+if [[ $1 == git ]] || [[ $1 == server ]] || [[ $1 == permission ]] || [[ $1 == site ]]; then
 
 	ACTION=$1
 
@@ -33,6 +33,15 @@ fi
 # Local file permission update
 if [[ $ACTION == all ]] || [[ $ACTION == permission ]]; then
 
+	permission_update site/
+
+fi
+
+
+# Local file permission update
+if [[ $ACTION == site ]]; then
+
+	git_permission_update site/.git
 	permission_update site/
 
 fi
