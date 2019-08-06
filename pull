@@ -14,6 +14,16 @@ fi
 
 
 
+INSTALLED="no"
+if [[ $IP != 127.0.0.1 ]] && [[ -f .env ]]; then
+
+	INSTALLED="yes"
+
+fi
+
+
+
+
 # Builder updates
 self_update
 
@@ -22,7 +32,7 @@ self_update
 
 # Confirmation
 if [[ $1 == --hard ]]; then
-	
+
 	read -ep "Are you sure you want to get latest changes from Git? This will replace all the changes you might have done. (yes | no): " ACTION
 	[[ $ACTION != yes ]] && exit || sleep 0
 
@@ -32,7 +42,7 @@ fi
 
 
 # DETECT DB CHANGES
-if [[ $1 == --hard ]]; then
+if [[ $1 == --hard ]] && [[ INSTALLED == "yes" ]]; then
 	db_backup
 fi
 DB_FILE=site/database/dump/wordpress_data.sql
@@ -64,7 +74,7 @@ if [[ $DB_SUM1 != $DB_SUM2 ]]; then
 
 
 	# If installed
-	if [[ $IP != 127.0.0.1 ]] && [[ -f .env ]]; then
+	if [[ INSTALLED == "yes" ]]; then
 
 		echo "Closing server..."
 		docker-compose down
@@ -94,7 +104,7 @@ fi
 
 
 # If installed
-if [[ $IP != 127.0.0.1 ]] && [[ -f .env ]]; then
+if [[ INSTALLED == "yes" ]]; then
 
 
 	echo "Site is building again..."
