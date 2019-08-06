@@ -127,4 +127,13 @@ fi
 
 
 
+
+# Permission fix needed
+if [[ $1 == --hard ]]; then
+
+	sudo bash permission-fix
+
+fi
+
+
 echo -e "${GREEN}PULLING COMPLETE${RESET}"
