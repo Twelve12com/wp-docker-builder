@@ -44,7 +44,7 @@ fi
 
 
 # DETECT DB CHANGES
-if [[ $1 == --hard ]] && [[ INSTALLED == "yes" ]]; then
+if [[ $1 == --hard ]] && [[ $INSTALLED == "yes" ]]; then
 	db_backup
 fi
 DB_FILE=site/database/dump/wordpress_data.sql
@@ -76,7 +76,7 @@ if [[ $DB_SUM1 != $DB_SUM2 ]]; then
 
 
 	# If installed
-	if [[ INSTALLED == "yes" ]]; then
+	if [[ $INSTALLED == "yes" ]]; then
 
 		echo "Closing server..."
 		docker-compose down
@@ -106,7 +106,7 @@ fi
 
 
 # If installed
-if [[ INSTALLED == "yes" ]]; then
+if [[ $INSTALLED == "yes" ]]; then
 
 
 	echo "Site is building again..."
