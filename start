@@ -34,7 +34,7 @@ echo -e "'${IP}' is now available ... ${GREEN}done${RESET}"
 
 
 
-# Pull the changes
+# Pull the changes and start
 if [[ $1 == --hard ]]; then
 
 	sudo bash pull --hard
