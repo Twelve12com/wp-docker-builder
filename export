@@ -79,6 +79,14 @@ if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
 	fi
 
 
+	# Delete 'package-lock.json' file if exists
+	if [[ -f "${BASEDIR}/site/export/${SLUG}/package-lock.json" ]]; then
+
+		rm -rf "${BASEDIR}/site/export/${SLUG}/package-lock.json"
+
+	fi
+
+
 else
 
 	echo -e "${RED}CHANGED SQL FILE NOT FOUND.${RESET}"
