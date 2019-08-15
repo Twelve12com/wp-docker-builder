@@ -337,9 +337,75 @@ function move_import_files () {
 	fi
 	echo -e "'import' folder detected ... ${GREEN}done${RESET}"
 
-
-
 	# IMPORT FOLDER NOW EXISTS
+
+
+	# Prepare the backup folder
+	if [[ -f "${BASEDIR}/site/import/wp-config.php" ]]; then
+
+
+		echo -e "WP core files are being removed..."
+		(
+			cd "${BASEDIR}/site/import/"
+			find . -mindepth 1 -maxdepth 1 ! -name 'wp-content' -exec rm -rf '{}' \;
+		)
+		echo -e "WP core files removed ... ${GREEN}done${RESET}"
+
+
+		if [[ -f "${BASEDIR}/site/import/wp-content/mysql.sql" ]]; then
+
+			echo -e "Moving the DB file..."
+			mv "${BASEDIR}/site/import/wp-content/mysql.sql" "${BASEDIR}/site/import/mysql.sql"
+			echo -e "DB file moved ... ${GREEN}done${RESET}"
+
+		fi
+
+
+		if [[ -f "${BASEDIR}/site/import/wp-content/advanced-cache.php" ]]; then
+
+			rm -rf "${BASEDIR}/site/import/wp-content/advanced-cache.php"
+			echo -e "'wp-content/advanced-cache.php' file removed ... ${GREEN}done${RESET}"
+
+		fi
+
+
+		if [[ -d "${BASEDIR}/site/import/wp-content/cache/" ]] || [[ -d "${BASEDIR}/site/import/wp-content/uploads/cache/" ]]; then
+
+			rm -rf "${BASEDIR}/site/import/wp-content/cache/"
+			rm -rf "${BASEDIR}/site/import/wp-content/uploads/cache/"
+			echo -e "'cache' folders removed ... ${GREEN}done${RESET}"
+
+		fi
+
+
+		if [[ -d "${BASEDIR}/site/import/wp-content/mu-plugins/" ]]; then
+
+			rm -rf "${BASEDIR}/site/import/wp-content/mu-plugins/"
+			echo -e "'mu-plugins' folder removed ... ${GREEN}done${RESET}"
+
+		fi
+
+
+		if [[ -d "${BASEDIR}/site/import/wp-content/plugins/hyperdb" ]]; then
+
+			rm -rf "${BASEDIR}/site/import/wp-content/plugins/hyperdb"
+			rm -rf "${BASEDIR}/site/import/wp-content/plugins/hyperdb-1"
+			rm -rf "${BASEDIR}/site/import/wp-content/plugins/hyperdb-1-1"
+			echo -e "'hyperdb' plugin removed ... ${GREEN}done${RESET}"
+
+		fi
+
+
+		if [[ -d "${BASEDIR}/site/import/wp-content/plugins/really-simple-ssl" ]]; then
+
+			rm -rf "${BASEDIR}/site/import/wp-content/plugins/really-simple-ssl"
+			echo -e "'really-simple-ssl' plugin removed ... ${GREEN}done${RESET}"
+
+		fi
+
+
+	fi
+
 
 	# Create target folders if not exist
 	if [[ ! -d "${BASEDIR}/site/database/dump/" ]]; then
