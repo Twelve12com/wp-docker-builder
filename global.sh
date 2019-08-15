@@ -344,6 +344,9 @@ function move_import_files () {
 	if [[ -f "${BASEDIR}/site/import/wp-config.php" ]]; then
 
 
+		echo -e "${BLUE}FULL SITE BACKUP DETECTED${RESET}"
+
+
 		echo -e "WP core files are being removed..."
 		(
 			cd "${BASEDIR}/site/import/"
@@ -402,6 +405,9 @@ function move_import_files () {
 			echo -e "'really-simple-ssl' plugin removed ... ${GREEN}done${RESET}"
 
 		fi
+
+
+		echo -e "${BLUE}FULL SITE BACKUP PREPARATION COMPLETE.${RESET}"
 
 
 	fi
