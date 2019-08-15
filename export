@@ -87,6 +87,20 @@ if [[ -f "${BASEDIR}/site/database/dump/wordpress_data.sql" ]]; then
 	fi
 
 
+	# Zip the folder
+	echo -e "Zipping the theme folder..."
+	(
+		cd "${BASEDIR}/site/export/"
+		zip -r -X "${SLUG}.zip" "${SLUG}"
+	)
+	echo -e "'${SLUG}.zip' theme file created ... ${GREEN}done${RESET}"
+
+
+	# Remove the folder
+	rm -rf "${BASEDIR}/site/export/${SLUG}/"
+	echo -e "Theme folder removed ... ${GREEN}done${RESET}"
+
+
 else
 
 	echo -e "${RED}CHANGED SQL FILE NOT FOUND.${RESET}"
