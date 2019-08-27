@@ -39,13 +39,6 @@ if [[ $1 == --hard ]]; then
 
 fi
 
-if [[ $1 == --import ]]; then
-
-	# read -ep "Are you sure you want to replace all the data with the im latest changes from Git? This will replace all the changes you might have done. (yes | no): " ACTION
-	# [[ $ACTION != yes ]] && exit || sleep 0
-
-fi
-
 
 
 
