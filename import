@@ -2,90 +2,14 @@
 source global.sh
 
 
-
-# Install if not already
-if [[ $IP == 127.0.0.1 ]] || [[ ! -f .env ]]; then
-
-	echo "Redirecting to installation..."
-	bash install
-	exit
-
-fi
-
-
-
-# Get data from .env file
-source .env
-
-
-
-# Builder updates
-self_update
-
-
-
 echo "IMPORTING STARTED"
 
 
 
-# Move import files
-move_import_files
+# IMPORT AND SETUP THE SERVER
+sudo bash pull --import
 
 
 
-# Move the 'wp-content' folder TEMPORARILY
-make_temporary
 
-
-
-echo "Closing server..."
-docker-compose down
-echo -e "Server is down ... ${GREEN}done${RESET}"
-
-
-
-echo "Old data removing..."
-rm -rf "${BASEDIR}/site/database/mysql/"
-echo -e "Remove old data ... ${GREEN}done${RESET}"
-
-
-
-echo "Site is building again..."
-docker-compose up -d
-echo -e "Build server again ... ${GREEN}done${RESET}"
-
-
-
-# Check MySQL to be ready
-wait_for_mysql
-
-
-
-# Ask the registered URL and do the replacements
-db_url_update
-
-
-
-# Make the 'wp-content' folder permanent
-make_permanent
-
-
-
-# Update the permissions
-permission_update "${BASEDIR}/site/"
-
-
-
-# PRINT THE SITE INFO
 echo -e "${GREEN}IMPORTING COMPLETE${RESET}"
-echo ""
-echo ""
-echo "== Site Info ===================="
-echo ""
-echo "Site URL: http://${DOMAIN}"
-echo "Admin Page: http://${DOMAIN}/wp-admin"
-echo "IP: ${IP}"
-echo ""
-echo "================================="
-echo ""
-echo ""
