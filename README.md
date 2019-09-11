@@ -1,3 +1,5 @@
+NOTE: This project has been moved to https://github.com/bilaltas/projector
+
 # Wordpress Docker Starter with a Clean Template
 Wordpress development environment with Docker. Starter template is being developed with Flexible Grid System. (Only tested on MacOS)
 <br><br>
